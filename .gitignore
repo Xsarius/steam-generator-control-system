@@ -1,0 +1,4 @@
+.env
+web/webcontrol/migrations
+__pycache__/
+*.py[cod]

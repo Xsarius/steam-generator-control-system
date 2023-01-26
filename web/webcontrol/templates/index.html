@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta id="viewport" content="width=device-width, initial-scale=1" />
+    <title>Steam Generator Controls</title>
+  </head>
+  <body>
+    {% load bootstrap5 %}
+    {% load static %}
+    {% bootstrap_css %}
+    {%bootstrap_javascript %}
+    {% bootstrap_messages%}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{% static '/js/data_fetch.js' %}"></script>
+    <script src="{% static '/js/stop_key.js' %}"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>  
+
+    <div class="controls_body">
+      <div class="sensors">
+        <div class="temp_sensor_w1">
+          <span>Water temp: <span id="water_temp">NaN</span></span>
+        </div>
+        <div class="temp_sensor_s1">
+          <span>Steam temp (sensor 1): <span id="steam_temp_1">NaN</span></span>
+        </div>
+        <div class="temp_sensor_s2">
+          <span>Steam temp (sensor 2): <span id="steam_temp_2">NaN</span></span>
+        </div>
+        <div class="p_sensor_temp">
+          <span>Pressure sensor temp: <span id="ps_temp">NaN</span></span>
+        </div>
+        <div class="pressure_sensor">
+          <span>Pressure: <span id="pressure">NaN</span></span>
+        </div>
+      </div>
+      <div class="stop_button">
+        <button id="emergency_stop" onclick="keySendPOST(this.id)">EMERGENCY STOP</button>
+      </div>
+      <div class="control_buttons">
+        <div class="heater_w1_button">
+          <span>Water heater 1: <span id="heater_1">NaN</span></span>
+          <button id="heater_w1" onclick="keySendPOST(this.id)">ON/OFF</button>
+        </div>
+        <div class="heater_w2_button">
+          <span>Water heater 2: <span id="heater_2">NaN</span></span>
+          <button id="heater_w2" onclick="keySendPOST(this.id)">ON/OFF</button>
+        </div>
+        <div class="heater_w3_button">
+          <span>Water heater 3: <span id="heater_3">NaN</span></span>
+          <button id="heater_w3" onclick="keySendPOST(this.id)">ON/OFF</button>
+        </div>
+        <div class="heater_st_button">
+          <span>Steam heater 1: <span id="heater_st1">NaN</span></span>
+          <button id="heater_st" onclick="keySendPOST(this.id)">ON/OFF</button>
+        </div>
+        <div class="valve_button">
+          <span>Steam valve: <span id="valve">NaN</span></span>
+          <button id="valve" onclick="keySendPOST(this.id)">OPEN/CLOSE</button>
+        </div>
+      </div>
+      <div class="files_body">
+        <div class="save_active">
+          <span class="save_curr_state"
+            >Data save: <span id="save">Inactive</span></span
+          >
+          <button id="save" onclick="keySendPOST(this.id)">ON/OFF</button>
+        </div>
+      </div>
+      <div class="download_button">
+        <button id="download" type="button" onclick="">
+          Download last data file
+        </button>
+      </div>
+    </div>
+    <div id="chartContainer1" style="height: 370px; width: 740px"></div>
+    <div id="chartContainer2" style="height: 370px; width: 740px"></div>
+    <div id="chartContainer3" style="height: 370px; width: 740px"></div>
+  </body>
+</html>

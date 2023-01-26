@@ -1,0 +1,16 @@
+adafruit-circuitpython-max31865
+board
+RPi.GPIO
+gunicorn==20.0.4
+django-bootstrap-v5
+celery
+python-decouple
+redis
+tzdata
+asgiref
+Django==3.2.5
+psycopg2-binary
+pytz
+python-dotenv
+minimalmodbus
+timeloop
