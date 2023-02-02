@@ -62,3 +62,18 @@ class UpdateData(View):
         res = controller.get_output()
         return JsonResponse(res)
 
+class DownloadFileView(View):
+    def post(self, request):
+        file_name = request.POST.get('file_name')
+        file_data = controller.get_data_from_db()
+        file_path = os.path.join(DOWNLOAD_FILES_PATH, file_name)
+
+        with open(file_path, "w") as file:
+            file.write(file_data)
+            response = FileResponse(file)
+            response['content_type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment; filename="{}"'.format(file.file_name)
+        return response
+
+    def get(self, request):
+        return HttpResponseBadRequest()

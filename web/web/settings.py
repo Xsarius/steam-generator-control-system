@@ -41,7 +41,7 @@ PINS = {
     'HEATER_2': 25,
     'HEATER_3': 20,
     'HEATER_STEAM_1': 21,
-    'STOP': 7,
+    'STOP': 16,
 }
 
 KELLER_CONFIG = {

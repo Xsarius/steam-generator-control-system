@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from webcontrol.views import Index, UpdateData
+from webcontrol.views import Index, UpdateData, DownloadFileView
 from django.views.static import serve
 from django.conf import settings
 
@@ -23,5 +23,5 @@ urlpatterns = [
     path('', Index.as_view()),
     path('update_data/', UpdateData.as_view()),
     path('admin/', admin.site.urls),
-    # re_path(r'static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    path('download/', DownloadFileView.as_view()),
 ]
