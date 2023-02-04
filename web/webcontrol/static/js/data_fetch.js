@@ -210,14 +210,14 @@ function getCookie(cname) {
 
 function keySendPOST(elementname){
   curr_vals[elementname] = 1 - curr_vals[elementname];
-  sendPOST();
+  sendPOST(curr_vals, "/");
 }
 
-function sendPOST() {
+function sendPOST(post_data_vals, url) {
   $.ajax({
     type: "POST",
-    url: "/",
-    data: curr_vals,
+    url: url,
+    data: post_data_vals,
     headers: {
       "X-Requested-With": "XMLHttpRequest",
       "X-CSRFToken": getCookie("csrftoken"), // don't forget to include the 'getCookie' function

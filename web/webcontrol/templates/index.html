@@ -6,15 +6,13 @@
     <title>Steam Generator Controls</title>
   </head>
   <body>
-    {% load bootstrap5 %}
-    {% load static %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    {% bootstrap_messages%}
+    {% load bootstrap5 %} {% load static %} {% bootstrap_css %} {%
+    bootstrap_javascript %} {% bootstrap_messages%}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="{% static '/js/data_fetch.js' %}"></script>
     <script src="{% static '/js/stop_key.js' %}"></script>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>  
+    <script src="{% static '/js/download_from_db.js' %}"></script>
 
     <div class="controls_body">
       <div class="sensors">
@@ -35,7 +33,9 @@
         </div>
       </div>
       <div class="stop_button">
-        <button id="emergency_stop" onclick="keySendPOST(this.id)">EMERGENCY STOP</button>
+        <button id="emergency_stop" onclick="keySendPOST(this.id)">
+          EMERGENCY STOP
+        </button>
       </div>
       <div class="control_buttons">
         <div class="heater_w1_button">
@@ -61,14 +61,14 @@
       </div>
       <div class="files_body">
         <div class="save_active">
-          <span class="save_curr_state"
-            >Data save: <span id="save">Inactive</span></span
-          >
+          <span class="save_curr_state">
+            Data save: <span id="save">Inactive</span>
+            </span>
           <button id="save" onclick="keySendPOST(this.id)">ON/OFF</button>
         </div>
       </div>
       <div class="download_button">
-        <button id="download" type="button" onclick="">
+        <button id="download" type="button" onclick="downloadFile()">
           Download last data file
         </button>
       </div>
