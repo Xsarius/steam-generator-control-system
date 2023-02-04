@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import JsonResponse
-from web.settings import DEBUG
+from django.http import JsonResponse, FileResponse, HttpResponseBadRequest
+from web.settings import DEBUG, DOWNLOAD_FILES_PATH
 from webcontrol.tasks import controller
+import os
 
 post_request_commands = {
     'emergency_stop': 0,
@@ -73,6 +74,7 @@ class DownloadFileView(View):
             response = FileResponse(file)
             response['content_type'] = 'application/octet-stream'
             response['Content-Disposition'] = 'attachment; filename="{}"'.format(file.file_name)
+
         return response
 
     def get(self, request):
