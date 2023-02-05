@@ -9,9 +9,6 @@ from webcontrol.models import SteamGenerator
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
 
-t1.start()
-t2.start()
-
 curr_id = 0
 
 class SGController:

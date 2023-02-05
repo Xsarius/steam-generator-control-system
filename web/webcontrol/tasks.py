@@ -5,6 +5,9 @@ from .models import SteamGenerator
 
 controller = SGController()
 
+t1.start()
+t2.start()
+
 @t1.job(interval=datetime.timedelta(milliseconds=1000))
 def watchdog():
     if(controller.temp_sensor_w1 >= MAX_TEMP or
