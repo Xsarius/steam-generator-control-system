@@ -23,6 +23,8 @@ def save_data_to_db(data):
         measurement_num = curr_id
         )
 
+    SteamGenerator.save()
+
 
 @t1.job(interval=datetime.timedelta(milliseconds=1000))
 def watchdog():
