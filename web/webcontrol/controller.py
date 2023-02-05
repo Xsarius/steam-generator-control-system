@@ -190,5 +190,6 @@ class SGController:
 
     def get_data_from_db(self):
         curr_id = SteamGenerator.objects.latest('measurement_num')
+        print(curr_id)
         data = SteamGenerator.objects.filter(measurement_num=curr_id).all()
         return data
