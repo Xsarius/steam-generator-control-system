@@ -10,6 +10,7 @@ t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
 t1.start()
 t2.start()
+
 curr_id = 0
 
 class SGController:
@@ -178,6 +179,7 @@ class SGController:
             curr_id = SteamGenerator.objects.latest('measurement_num') + 1
         except:
             curr_id = 1
+
         self.data_save_started = True
 
     def stop_data_save(self):
@@ -189,7 +191,10 @@ class SGController:
         pass
 
     def get_data_from_db(self):
-        curr_id = SteamGenerator.objects.latest('measurement_num')
+        try:
+            curr_id = SteamGenerator.objects.latest('measurement_num')
+        except: 
+            curr_id = 1
         print(curr_id)
         data = SteamGenerator.objects.filter(measurement_num=curr_id).all()
         return data

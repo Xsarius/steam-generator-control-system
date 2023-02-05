@@ -14,7 +14,7 @@ def watchdog():
 
         controller.soft_shutdown()
 
-@t2.job(interval=datetime.timedelta(milliseconds=5000))
+@t2.job(interval=datetime.timedelta(milliseconds=500))
 def savedata():
     if controller.data_save_started:
         data = controller.get_output()
