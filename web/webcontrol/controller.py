@@ -174,7 +174,10 @@ class SGController:
         self.heater_s1.off()
 
     def start_data_save(self):
-        curr_id = SteamGenerator.objects.latest('measurement_num') + 1
+        try:
+            curr_id = SteamGenerator.objects.latest('measurement_num') + 1
+        except:
+            curr_id = 1
         self.data_save_started = True
 
     def stop_data_save(self):
