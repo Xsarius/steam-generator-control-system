@@ -1,9 +1,28 @@
 #!/bin/bash
 
+# Script installs docker and docker compose - use with raspbian os 
+# See: https://docs.docker.com/engine/install/debian/#install-using-the-repository
+# for more information
+
 echo "Setup started"
-sudo apt update
 
-curl -fsSL https://get.docker.com | sh
-sudo apt-get install docker-compose-plugin
+sudo apt-get update
+sudo apt-get install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
 
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+sudo docker --version
 sudo docker compose version
