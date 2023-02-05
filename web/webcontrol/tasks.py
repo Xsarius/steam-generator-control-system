@@ -5,27 +5,6 @@ from .models import SteamGenerator
 
 controller = SGController()
 
-def save_data_to_db(data):
-    if(DEBUG):
-        print("data to db save started\n")
-        print(data)
-
-    SteamGenerator.objects.create(
-        water_temp = data['water_temp'],
-        steam_temp_1 = data['steam_temp_1'],
-        steam_temp_2 = data['steam_temp_2'],
-        pressure = data['pressure'],
-        heater_water1_power = data['heater_1'],
-        heater_water2_power = data['heater_2'],
-        heater_water3_power = data['heater_3'],
-        heater_steam_power = data['heater_st'],
-        valve = data['valve'],
-        measurement_num = curr_id
-        )
-
-    SteamGenerator.save()
-
-
 @t1.job(interval=datetime.timedelta(milliseconds=1000))
 def watchdog():
     if(controller.temp_sensor_w1 >= MAX_TEMP or
@@ -39,6 +18,23 @@ def watchdog():
 def savedata():
     if controller.data_save_started:
         data = controller.get_output()
-        save_data_to_db(data)
+        if(DEBUG):
+            print("data to db save started\n")
+            print(data)
+
+        SteamGenerator.objects.create(
+            water_temp = data['water_temp'],
+            steam_temp_1 = data['steam_temp_1'],
+            steam_temp_2 = data['steam_temp_2'],
+            pressure = data['pressure'],
+            heater_water1_power = data['heater_1'],
+            heater_water2_power = data['heater_2'],
+            heater_water3_power = data['heater_3'],
+            heater_steam_power = data['heater_st'],
+            valve = data['valve'],
+            measurement_num = curr_id
+            )
+
+        SteamGenerator.save()
     else:
         pass

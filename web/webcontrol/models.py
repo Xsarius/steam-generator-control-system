@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class SteamGenerator(models.Model):
     time_stamp = models.DateTimeField(auto_now_add=True) # Adds automaticaly timestamp to each measurement
     water_temp = models.FloatField()
