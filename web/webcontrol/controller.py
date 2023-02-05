@@ -14,52 +14,64 @@ curr_id = 0
 
 class SGController:
     def __init__(self):
+        print("SGcontroller setup started.")
+        failed_to_connect = {}
         self.control_commands = defaultdict(int)
         gpio.setmode(gpio.BCM)
         self.data_save_started = False
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
+            failed_to_connect["Temp sensor: water"] = "connected"
         except:
-            print("Water temperature sensor no.1 failed to connet")
+            failed_to_connect["Temp sensor: water"] = "failed"
         try:
             self.temp_sensor_s1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_STEAM_1'])
+            failed_to_connect["Temp sensor: steam (1)"] = "connected"
         except:
-            print("Steam temperature sensor no.2 failed to connet")
+            failed_to_connect["Temp sensor: steam (1)"] = "failed"
         try:
             self.temp_sensor_s2 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_STEAM_2'])
+            failed_to_connect["Temp sensor: steam (2)"] = "connected"
         except:
-            print("Steam temperature sensor no.2 failed to connet")
+            failed_to_connect["Temp sensor: steam (2)"] = "failed"
         try:
             self.pressure_sensor = pressure_sensors.Keller23sx(
                 registers_dict=KELLER_CONFIG['registers'],
                 port=KELLER_CONFIG['port'],
                 unit=KELLER_CONFIG['unit'])
+            failed_to_connect["Pressure sensor"] = "connected"
         except:
-            print("Pressure sensor no.1 failed to connet")
+            failed_to_connect["Pressure sensor"] = "failed"
         try:
             self.valve = devices.Valve_SRR(pinNum=PINS['VALVE_1'])
+            failed_to_connect["Valve"] = "connected"
         except:
-            print("Valve failed to connet")
+            failed_to_connect["Valve"] = "failed"
         try:
             self.heater_w1 = devices.Heater_SSR(pinNum=PINS['HEATER_1'], maxpower=2667)
+            failed_to_connect["Heater: water (1)"] = "connected"
         except:
-            print("Water heater no.1 failed to connet")
+            failed_to_connect["Heater: water (1)"] = "failed"
         try:
             self.heater_w2 = devices.Heater_SSR(pinNum=PINS['HEATER_2'], maxpower=2667)
+            failed_to_connect["Heater: water (2)"] = "connected"
         except:
-            print("Water heater no.2 failed to connet")
+            failed_to_connect["Heater: water (2)"] = "failed"
         try:
             self.heater_w3 = devices.Heater_SSR(pinNum=PINS['HEATER_3'], maxpower=2667)
+            failed_to_connect["Heater: water (3)"] = "connected"
         except:
-            print("Water heater no.3 failed to connet")
+            failed_to_connect["Heater: water (3)"] = "failed"
         try:
             self.heater_s1 = devices.Heater_SSR(pinNum=PINS['HEATER_STEAM_1'], maxpower=954)
+            failed_to_connect["Heater: steam"] = "connected"
         except:
-            print("Steam heater no.1 failed to connet")
+            failed_to_connect["Heater: steam"] = "failed"
 
-    def stop(self):
-        pass
+        print("SG controller setup finished.")
+        print("Result:")
+        print(failed_to_connect)
 
     def set_commands(self, commands):
         commands_changed = 0
