@@ -25,8 +25,7 @@ class Index(View):
     def post(self, request, *args, **kwargs):
         post_data = request.POST.dict()
 
-        if(DEBUG):
-            print(post_data)
+        print(post_data)
 
         for ele in post_data.keys():
             if(ele in post_request_commands.keys()):
@@ -46,14 +45,13 @@ class Index(View):
             'valve': post_request_commands['valve'],
         })
 
-        controller.control_loop()
-
-        if(post_request_commands['save']
-            and not controller.data_save_started):
+        if(post_request_commands['save'] and not controller.data_save_started):
             controller.start_data_save()
 
         if(not post_request_commands['save']):
             controller.stop_data_save()
+
+        controller.control_loop()
 
         template = 'index.html'
         return render(request, template)

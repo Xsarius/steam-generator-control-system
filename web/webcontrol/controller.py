@@ -185,11 +185,6 @@ class SGController:
             print("Emergency stop")
         pass
 
-    def soft_shutdown(self):
-        if(DEBUG):
-            print("Soft stop")
-        pass
-
     def get_data_from_db(self):
         curr_id = SteamGenerator.objects.latest('measurement_num')
         data = SteamGenerator.objects.filter(measurement_num=curr_id).all()
