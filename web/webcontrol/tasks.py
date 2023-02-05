@@ -37,4 +37,4 @@ def savedata():
 
         SteamGenerator.save()
     else:
-        pass
+        print("Data save passed")
