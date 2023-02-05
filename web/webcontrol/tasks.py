@@ -17,10 +17,10 @@ def watchdog():
 @t2.job(interval=datetime.timedelta(milliseconds=500))
 def savedata():
     if controller.data_save_started:
-        data = controller.get_output()
         if(DEBUG):
             print("data to db save started\n")
-            print(data)
+
+        data = controller.get_output()
 
         SteamGenerator.objects.create(
             water_temp = data['water_temp'],
