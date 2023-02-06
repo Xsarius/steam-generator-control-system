@@ -10,6 +10,7 @@ t2.start()
 
 @t1.job(interval=datetime.timedelta(milliseconds=1000))
 def watchdog():
+    print("Watchdog active.\n")
     if(controller.temp_sensor_w1 >= MAX_TEMP or
         controller.temp_sensor_s1 >= MAX_TEMP or
         controller.temp_sensor_s2 >= MAX_TEMP or
@@ -21,7 +22,7 @@ def watchdog():
 def savedata():
     if controller.data_save_started:
         if(DEBUG):
-            print("data to db save started\n")
+            print("Save to db active.\n")
 
         data = controller.get_output()
 
@@ -40,4 +41,4 @@ def savedata():
 
         SteamGenerator.save()
     else:
-        print("Data save passed")
+        print("Save to db inactive.\n")

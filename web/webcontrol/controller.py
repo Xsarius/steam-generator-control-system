@@ -139,7 +139,7 @@ class SGController:
 
     def control_loop(self):
         if(DEBUG):
-            print("control loop entered\n")
+            print("Control loop.\n")
 
         if(self.control_commands['heater_st_power']):
             self.heater_s1.on()
@@ -177,10 +177,11 @@ class SGController:
             curr_id = SteamGenerator.objects.latest('measurement_num') + 1
         except:
             curr_id = 1
-
+        print("Save to db started.\n")
         self.data_save_started = True
 
     def stop_data_save(self):
+        print("Save to db stopped.\n")
         self.data_save_started = False
 
     def emergency_shutdown(self):
