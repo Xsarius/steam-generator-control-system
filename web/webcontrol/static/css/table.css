@@ -1,9 +1,5 @@
 table {
     border-collapse: collapse;
-}
-
-.params_table {
-    position: fixed;
-    right: 5%;
-    top: 5%;
+    border: 1px;
+    border-color: black;
 }

@@ -6,8 +6,8 @@
     <title>Steam Generator Controls</title>
   </head>
   <body>
-    {% load bootstrap5 %} {% load static %} {% bootstrap_css %} {%
-    bootstrap_javascript %} {% bootstrap_messages %}
+    {% load bootstrap5 %} {% load static %} {% bootstrap_css %} 
+    {% bootstrap_javascript %} {% bootstrap_messages %}
 
     <link rel="stylesheet" href="{% static '/css/general.css' %}" />
 
@@ -30,7 +30,7 @@
     <div>
       <label for="temp_setpoint">Temperature setpoint:</label><br />
       <input type="number" id="temp_setpoint" name="temp_setpoint" /><br /><br />
-      <button value="Submit values" onclick="sendSetpoints()"></button>
+      <button onclick="sendSetpoints()">Submit temp setpoint</button>
     </div>
     <div class="files_body">
       <div class="save_active">
@@ -45,101 +45,104 @@
         Download last data file
       </button>
     </div>
-    <table>
-      <th>Current setpoint</th>
-      <tr>
-        <td>Temperature</td>
-        <td><span id="curr_temp_set">NaN</span></td>
-        <td>[&#8451;]</td>
-      </tr>
-      <tr>
-        <td>Pressure</td>
-        <td><span id="curr_press_set">NaN</span></td>
-        <td>[bar]</td>
-      </tr>
-    </table>
-
-    <table class="params_table">
-      <tr>
-        <th>Parameter</th>
-        <th>Value</th>
-        <th>Unit</th>
-      </tr>
-      <tr>
-        <td>Water temp</td>
-        <td><span id="water_temp">NaN</span></td>
-        <td>[&#8451;]</td>
-      </tr>
-      <tr>
-        <td>Steam temp (sensor 1)</td>
-        <td><span id="steam_temp_1">NaN</span></td>
-        <td>[&#8451;]</td>
-      </tr>
-      <tr>
-        <td>Steam temp (sensor 2)</td>
-        <td><span id="steam_temp_2">NaN</span></td>
-        <td>[&#8451;]</td>
-      </tr>
-      <tr>
-        <td>Pressure</td>
-        <td><span id="pressure">NaN</span></td>
-        <td>[bar]</td>
-      </tr>
-      <tr>
-        <th>Electric parameters (Phase 1)</th>
-      </tr>
-      <tr>
-        <td>Voltage</td>
-        <td><span id="voltage_ph1"></span></td>
-        <td>[V]</td>
-      </tr>
-      <tr>
-        <td>Current</td>
-        <td><span id="current_ph1"></span></td>
-        <td>[A]</td>
-      </tr>
-      <tr>
-        <td>Active power</td>
-        <td><span id="active_power_ph1"></span></td>
-        <td>[kW]</td>
-      </tr>
-      <tr>
-        <th>Electric parameters (Phase 2)</th>
-      </tr>
-      <tr>
-        <td>Voltage</td>
-        <td><span id="voltage_ph2"></span></td>
-        <td>[V]</td>
-      </tr>
-      <tr>
-        <td>Current</td>
-        <td><span id="current_ph2"></span></td>
-        <td>[A]</td>
-      </tr>
-      <tr>
-        <td>Active power</td>
-        <td><span id="active_power_ph2"></span></td>
-        <td>[kW]</td>
-      </tr>
-      <tr>
-        <th>Electric parameters (Phase 3)</th>
-      </tr>
-      <tr>
-        <td>Voltage</td>
-        <td><span id="voltage_ph3"></span></td>
-        <td>[V]</td>
-      </tr>
-      <tr>
-        <td>Current</td>
-        <td><span id="current_ph3"></span></td>
-        <td>[A]</td>
-      </tr>
-      <tr>
-        <td>Active power</td>
-        <td><span id="active_power_ph3"></span></td>
-        <td>[kW]</td>
-      </tr>
-    </table>
+    <div>
+      <table>
+        <th>Current setpoint</th>
+        <tr>
+          <td>Temperature</td>
+          <td><span id="curr_temp_set">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Pressure</td>
+          <td><span id="curr_press_set">NaN</span></td>
+          <td>[bar]</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <table class="params_table">
+        <tr>
+          <th>Parameter</th>
+          <th>Value</th>
+          <th>Unit</th>
+        </tr>
+        <tr>
+          <td>Water temp</td>
+          <td><span id="water_temp">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Steam temp (sensor 1)</td>
+          <td><span id="steam_temp_1">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Steam temp (sensor 2)</td>
+          <td><span id="steam_temp_2">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Pressure</td>
+          <td><span id="pressure">NaN</span></td>
+          <td>[bar]</td>
+        </tr>
+        <tr>
+          <th>Electric parameters (Phase 1)</th>
+        </tr>
+        <tr>
+          <td>Voltage</td>
+          <td><span id="voltage_ph1"></span></td>
+          <td>[V]</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td><span id="current_ph1"></span></td>
+          <td>[A]</td>
+        </tr>
+        <tr>
+          <td>Active power</td>
+          <td><span id="active_power_ph1"></span></td>
+          <td>[kW]</td>
+        </tr>
+        <tr>
+          <th>Electric parameters (Phase 2)</th>
+        </tr>
+        <tr>
+          <td>Voltage</td>
+          <td><span id="voltage_ph2"></span></td>
+          <td>[V]</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td><span id="current_ph2"></span></td>
+          <td>[A]</td>
+        </tr>
+        <tr>
+          <td>Active power</td>
+          <td><span id="active_power_ph2"></span></td>
+          <td>[kW]</td>
+        </tr>
+        <tr>
+          <th>Electric parameters (Phase 3)</th>
+        </tr>
+        <tr>
+          <td>Voltage</td>
+          <td><span id="voltage_ph3"></span></td>
+          <td>[V]</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td><span id="current_ph3"></span></td>
+          <td>[A]</td>
+        </tr>
+        <tr>
+          <td>Active power</td>
+          <td><span id="active_power_ph3"></span></td>
+          <td>[kW]</td>
+        </tr>
+      </table>
+    </div>
     <div class="control_buttons">
       <div class="heater_w1_button">
         <span>Water heater 1: <span id="heater_1">NaN</span></span>
