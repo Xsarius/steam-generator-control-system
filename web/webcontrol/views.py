@@ -4,17 +4,6 @@ from django.http import JsonResponse
 from web.settings import DEBUG
 from webcontrol.tasks import controller
 
-post_request_commands = {
-    'emergency_stop': 0,
-    'soft_stop': 0,
-    'save': 0,
-    'heater_w1': 0,
-    'heater_w2': 0,
-    'heater_w3': 0,
-    'heater_st': 0,
-    'valve': 0,
-}
-
 class Index(View):
 
     def get(self, request, *args, **kwargs):
@@ -28,30 +17,25 @@ class Index(View):
             print(post_data)
 
         for ele in post_data.keys():
-            if(ele in post_request_commands.keys()):
-                post_request_commands[ele] = int(post_data[ele])
+            controller.control_params[ele] = int(post_data[ele])
 
-        if(post_request_commands['emergency_stop']):
+        if(controller.control_params['emergency_stop']):
             controller.emergency_shutdown()
 
-        if(post_request_commands['soft_stop']):
+        if(controller.control_params['soft_stop']):
             controller.soft_shutdown()
 
-        controller.set_commands({
-            'heater_1_power': post_request_commands['heater_w1'],
-            'heater_2_power': post_request_commands['heater_w2'],
-            'heater_3_power': post_request_commands['heater_w3'],
-            'heater_steam_power': post_request_commands['heater_st'],
-            'valve': post_request_commands['valve'],
-        })
+        if(controller.control_params['manual_mode']):
+            controller.control_loop()
 
-        controller.control_loop()
+        # if(controller.control_params['temp_setpoint']):
+            
 
-        if(post_request_commands['save']
+        if(controller.control_params['save']
             and not controller.data_save_started):
             controller.start_data_save()
 
-        if(not post_request_commands['save']):
+        if(not controller.control_params['save']):
             controller.stop_data_save()
 
         template = 'index.html'

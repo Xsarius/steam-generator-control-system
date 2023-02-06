@@ -1,9 +1,10 @@
 from web.settings import DEBUG, MAX_TEMP, MAX_PRESSURE
-import datetime
-from .controller import SGController, t1, t2, curr_id
+import datetime, simple_pid, os
+from .controller import SGController, t1, curr_id
 from .models import SteamGenerator
 
 controller = SGController()
+pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
 
 def save_data_to_db(data):
     if(DEBUG):
@@ -24,7 +25,7 @@ def save_data_to_db(data):
         )
 
 
-@t1.job(interval=datetime.timedelta(milliseconds=1000))
+@t1.job(interval=datetime.timedelta(seconds=1))
 def watchdog():
     if(controller.temp_sensor_w1 >= MAX_TEMP or
         controller.temp_sensor_s1 >= MAX_TEMP or
@@ -33,10 +34,12 @@ def watchdog():
 
         controller.soft_shutdown()
 
-@t2.job(interval=datetime.timedelta(milliseconds=5000))
+@t1.job(interval=datetime.timedelta(seconds=1))
 def savedata():
     if controller.data_save_started:
         data = controller.get_output()
         save_data_to_db(data)
     else:
         pass
+
+@t1.job(interval=datetime.timedelta(seconds=200))

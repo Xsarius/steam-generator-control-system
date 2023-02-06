@@ -7,16 +7,21 @@ from webcontrol.models import SteamGenerator
 
 # Periodic task handlers
 t1 = timeloop.Timeloop()
-t2 = timeloop.Timeloop()
+
 t1.start()
-t2.start()
+
 curr_id = 0
 
 class SGController:
-    def __init__(self):
-        self.control_commands = defaultdict(int)
+    def __init__(self, P_coeff = 1, I_coeff = 1, D_coeff = 0):
+        self.control_params = defaultdict(int)
         gpio.setmode(gpio.BCM)
         self.data_save_started = False
+        self.pid_coeffs = {
+            'P': P_coeff,
+            'I': I_coeff,
+            'D': D_coeff,
+        }
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
@@ -58,99 +63,61 @@ class SGController:
         except:
             print("Steam heater no.1 failed to connet")
 
-    def stop(self):
-        pass
-
-    def set_commands(self, commands):
-        commands_changed = 0
-
-        if(DEBUG):
-            print("self commands set")
-
-        if(self.control_commands['heater_1_power'] != commands['heater_1_power']):
-            self.control_commands['heater_1_power'] = commands['heater_1_power']
-            commands_changed += 1
-
-        if(self.control_commands['heater_2_power'] != commands['heater_2_power']):
-            self.control_commands['heater_2_power'] = commands['heater_2_power']
-            commands_changed += 1
-
-        if(self.control_commands['heater_3_power'] != commands['heater_3_power']):
-            self.control_commands['heater_3_power'] = commands['heater_3_power']
-            commands_changed += 1
-
-        if(self.control_commands['heater_st_power'] != commands['heater_steam_power']):
-            self.control_commands['heater_st_power'] = commands['heater_steam_power']
-            commands_changed += 1
-
-        if(self.control_commands['valve'] != commands['valve']):
-            self.control_commands['valve'] = commands['valve']
-            commands_changed += 1
-
-        if(DEBUG):
-            print(commands_changed)
-
-        return commands_changed
-
     def get_output(self):
         if(DEBUG):
             print("controller output")
 
-        if(DEBUG):
-            output = {
-                'water_temp': self.temp_sensor_w1.getTemp(),
-                'steam_temp_1': self.temp_sensor_s1.getTemp(),
-                'steam_temp_2': self.temp_sensor_s2.getTemp(),
-                'heater_1': self.heater_w1.state(),
-                'heater_2': self.heater_w2.state(),
-                'heater_3': self.heater_w3.state(),
-                'heater_st': self.heater_s1.state(),
-                'valve': self.valve.state(),
-                'save': int(self.data_save_started)
-            }
+        output = {
+            'water_temp': self.temp_sensor_w1.getTemp(),
+            'steam_temp_1': self.temp_sensor_s1.getTemp(),
+            'steam_temp_2': self.temp_sensor_s2.getTemp(),
+            'heater_w1': self.heater_w1.state(),
+            'heater_w2': self.heater_w2.state(),
+            'heater_w3': self.heater_w3.state(),
+            'heater_st': self.heater_s1.state(),
+            'valve': self.valve.state(),
+            'save': int(self.data_save_started)
+        }
 
         if(not DEBUG):
-            output = {
-                'water_temp': self.temp_sensor_w1.getTemp(),
-                'steam_temp_1': self.temp_sensor_s1.getTemp(),
-                'steam_temp_2': self.temp_sensor_s2.getTemp(),
-                'pressure': self.pressure_sensor.read('pressure'),
-                'ps_temp': self.pressure_sensor.read('temp'),
-                'heater_1': self.heater_w1.state(),
-                'heater_2': self.heater_w2.state(),
-                'heater_3': self.heater_w3.state(),
-                'heater_st': self.heater_s1.state(),
-                'valve': self.valve.state(),
-                'save': int(self.data_save_started)
-            }
+            output['pressure'] = self.pressure_sensor.read('pressure')
+            # output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
+            # output['current_ph1'] = self.power_meter_ph1.read('current')
+            # output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
+            # output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
+            # output['current_ph2'] = self.power_meter_ph2.read('current')
+            # output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
+            # output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
+            # output['current_ph3'] = self.power_meter_ph3.read('current')
+            # output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
 
         return output
 
     def control_loop(self):
         if(DEBUG):
-            print("control loop entered\n")
+            print("Control loop\n")
 
-        if(self.control_commands['heater_st_power']):
+        if(self.control_params['heater_st']):
             self.heater_s1.on()
         else:
             self.heater_s1.off()
 
-        if(self.control_commands['heater_1_power']):
+        if(self.control_params['heater_w1']):
             self.heater_w1.on()
         else:
             self.heater_w1.off()
 
-        if(self.control_commands['heater_2_power']):
+        if(self.control_params['heater_w2']):
             self.heater_w2.on()
         else:
             self.heater_w2.off()
 
-        if(self.control_commands['heater_3_power']):
+        if(self.control_params['heater_w3']):
             self.heater_w3.on()
         else:
             self.heater_w3.off()
 
-        if(self.control_commands['valve']):
+        if(self.control_params['valve']):
             self.valve.open()
         else:
             self.valve.close()
@@ -160,6 +127,7 @@ class SGController:
         self.heater_w2.off()
         self.heater_w3.off()
         self.heater_s1.off()
+        self.valve.close()
 
     def start_data_save(self):
         curr_id = SteamGenerator.objects.latest('measurement_num') + 1
@@ -171,11 +139,6 @@ class SGController:
     def emergency_shutdown(self):
         if(DEBUG):
             print("Emergency stop")
-        pass
-
-    def soft_shutdown(self):
-        if(DEBUG):
-            print("Soft stop")
         pass
 
     def get_data_from_db(self):
