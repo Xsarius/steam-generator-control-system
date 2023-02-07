@@ -8,4 +8,4 @@ class Pt100_SPI():
         self.sensor = adafruit_max31865.MAX31865(self.spi, self.cs, wires=wires)
 
     def getTemp(self):
-        return float('%.2f' % self.sensor.temperature)
+        return int('%.2f' % self.sensor.temperature)

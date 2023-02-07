@@ -34,7 +34,7 @@ def savedata():
 
         SteamGenerator.save()
 
-@t2.job(interval=datetime.timedelta(milliseconds=200))
+@t2.job(interval=datetime.timedelta(milliseconds=1000))
 def watchdog():
     if(controller.temp_sensor_w1.getTemp() >= MAX_TEMP or
         controller.temp_sensor_s1.getTemp() >= MAX_TEMP or
