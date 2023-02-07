@@ -15,6 +15,7 @@ class SGController:
         self.control_params = defaultdict(int)
         self.data_save_started = False
         self.pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
+        self.output = defaultdict(int)
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
@@ -116,32 +117,21 @@ class SGController:
         return commands_changed
 
     def get_output(self):
-        output = {
-            'water_temp': self.temp_sensor_w1.getTemp(),
-            'steam_temp_1': self.temp_sensor_s1.getTemp(),
-            'steam_temp_2': self.temp_sensor_s2.getTemp(),
-            'heater_w1': self.heater_w1.state(),
-            'heater_w2': self.heater_w2.state(),
-            'heater_w3': self.heater_w3.state(),
-            'heater_st': self.heater_s1.state(),
-            'valve': self.valve.state(),
-            'save': int(self.data_save_started),
-            'pressure': self.pressure_sensor.read('pressure'),
-        }
 
-        if(not DEBUG):
-            output['pid_signal'] = 0
-            output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
-            output['current_ph1'] = self.power_meter_ph1.read('current')
-            output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
-            output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
-            output['current_ph2'] = self.power_meter_ph2.read('current')
-            output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
-            output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
-            output['current_ph3'] = self.power_meter_ph3.read('current')
-            output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
 
-        return output
+        # if(not DEBUG):
+        #     output['pid_signal'] = 0
+        #     output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
+        #     output['current_ph1'] = self.power_meter_ph1.read('current')
+        #     output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
+        #     output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
+        #     output['current_ph2'] = self.power_meter_ph2.read('current')
+        #     output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
+        #     output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
+        #     output['current_ph3'] = self.power_meter_ph3.read('current')
+        #     output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
+
+        return self.output
 
     def control_loop(self):
         if(self.control_params['heater_st']):

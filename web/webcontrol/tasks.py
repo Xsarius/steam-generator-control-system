@@ -10,6 +10,25 @@ steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 # Periodic task handlers
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
+t3 = timeloop.Timeloop()
+
+@t3.job(interval=datetime.timedelta(seconds=1))
+def set_output():
+    try:
+        controller.output = {
+            'water_temp': controller.temp_sensor_w1.getTemp(),
+            'steam_temp_1': controller.temp_sensor_s1.getTemp(),
+            'steam_temp_2': controller.temp_sensor_s2.getTemp(),
+            'heater_w1': controller.heater_w1.state(),
+            'heater_w2': controller.heater_w2.state(),
+            'heater_w3': controller.heater_w3.state(),
+            'heater_st': controller.heater_s1.state(),
+            'valve': controller.valve.state(),
+            'save': int(controller.data_save_started),
+            'pressure': controller.pressure_sensor.read('pressure'),
+        }
+    except:
+        pass
 
 @t1.job(interval=datetime.timedelta(milliseconds=500))
 def savedata():
