@@ -36,9 +36,9 @@ def savedata():
 
 @t2.job(interval=datetime.timedelta(milliseconds=200))
 def watchdog():
-    if(controller.temp_sensor_w1 >= MAX_TEMP or
-        controller.temp_sensor_s1 >= MAX_TEMP or
-        controller.temp_sensor_s2 >= MAX_TEMP or
+    if(controller.temp_sensor_w1.getTemp() >= MAX_TEMP or
+        controller.temp_sensor_s1.getTemp() >= MAX_TEMP or
+        controller.temp_sensor_s2.getTemp() >= MAX_TEMP or
         controller.pressure_sensor.read('pressure') >= MAX_PRESSURE):
 
         controller.soft_shutdown()
