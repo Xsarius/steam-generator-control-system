@@ -14,3 +14,4 @@ pytz
 python-dotenv
 minimalmodbus
 timeloop
+simple-pid

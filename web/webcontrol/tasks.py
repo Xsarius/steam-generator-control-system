@@ -1,28 +1,18 @@
 from web.settings import DEBUG, MAX_TEMP, MAX_PRESSURE
-import datetime
-from .controller import SGController, t1, t2, curr_id
+import datetime, simple_pid, os
+from .controller import SGController, t1, curr_id
 from .models import SteamGenerator
 
 controller = SGController()
+pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
 
 t1.start()
-t2.start()
 
-@t1.job(interval=datetime.timedelta(milliseconds=1000))
-def watchdog():
-    print("Watchdog active.\n")
-    if(controller.temp_sensor_w1 >= MAX_TEMP or
-        controller.temp_sensor_s1 >= MAX_TEMP or
-        controller.temp_sensor_s2 >= MAX_TEMP or
-        controller.pressure_sensor.read('pressure') >= MAX_PRESSURE):
-
-        controller.soft_shutdown()
-
-@t2.job(interval=datetime.timedelta(milliseconds=500))
+@t1.job(interval=datetime.timedelta(milliseconds=500))
 def savedata():
     if controller.data_save_started:
         if(DEBUG):
-            print("Save to db active.\n")
+            print("Data save active.\n")
 
         data = controller.get_output()
 
@@ -40,5 +30,17 @@ def savedata():
             )
 
         SteamGenerator.save()
-    else:
-        print("Save to db inactive.\n")
+
+@t1.job(interval=datetime.timedelta(milliseconds=1000))
+def watchdog():
+    if(controller.temp_sensor_w1 >= MAX_TEMP or
+        controller.temp_sensor_s1 >= MAX_TEMP or
+        controller.temp_sensor_s2 >= MAX_TEMP or
+        controller.pressure_sensor.read('pressure') >= MAX_PRESSURE):
+
+        controller.soft_shutdown()
+
+
+@t1.job(interval=datetime.timedelta(seconds=200))
+def pid_loop():
+    pass

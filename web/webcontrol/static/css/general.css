@@ -1,0 +1,17 @@
+@import "../css/buttons.css";
+@import "../css/table.css";
+
+body {
+    background-color: bisque;
+}
+.left_column_div {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}
+
+.right_column_div {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+}

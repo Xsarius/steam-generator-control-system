@@ -6,75 +6,172 @@
     <title>Steam Generator Controls</title>
   </head>
   <body>
-    {% load bootstrap5 %} {% load static %} {% bootstrap_css %} {% bootstrap_javascript %} {% bootstrap_messages%}
+    {% load bootstrap5 %} {% load static %} {% bootstrap_css %} 
+    {% bootstrap_javascript %} {% bootstrap_messages %}
+
+    <link rel="stylesheet" href="{% static '/css/general.css' %}" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="{% static '/js/data_fetch.js' %}"></script>
     <script src="{% static '/js/stop_key.js' %}"></script>
-    <script src="{% static '/js/download_from_db.js' %}"></script>
+    <script src="{% static '/js/setpoints.js' %}"></script>
+    <script src="{% static '/js/post_rq.js' %}"></script>
+    <script src="{% static '/js/charts.js' %}"></script>
 
     {% csrf_token %}
-    <div class="controls_body">
-      <div class="sensors">
-        <div class="temp_sensor_w1">
-          <span>Water temp: <span id="water_temp">NaN</span></span>
-        </div>
-        <div class="temp_sensor_s1">
-          <span>Steam temp (sensor 1): <span id="steam_temp_1">NaN</span></span>
-        </div>
-        <div class="temp_sensor_s2">
-          <span>Steam temp (sensor 2): <span id="steam_temp_2">NaN</span></span>
-        </div>
-        <div class="p_sensor_temp">
-          <span>Pressure sensor temp: <span id="ps_temp">NaN</span></span>
-        </div>
-        <div class="pressure_sensor">
-          <span>Pressure: <span id="pressure">NaN</span></span>
-        </div>
-      </div>
-      <div class="stop_button">
-        <button id="emergency_stop" onclick="keySendPOST(this.id)">
-          EMERGENCY STOP
-        </button>
-      </div>
-      <div class="control_buttons">
-        <div class="heater_w1_button">
-          <span>Water heater 1: <span id="heater_1">NaN</span></span>
-          <button id="heater_w1" onclick="keySendPOST(this.id)">ON/OFF</button>
-        </div>
-        <div class="heater_w2_button">
-          <span>Water heater 2: <span id="heater_2">NaN</span></span>
-          <button id="heater_w2" onclick="keySendPOST(this.id)">ON/OFF</button>
-        </div>
-        <div class="heater_w3_button">
-          <span>Water heater 3: <span id="heater_3">NaN</span></span>
-          <button id="heater_w3" onclick="keySendPOST(this.id)">ON/OFF</button>
-        </div>
-        <div class="heater_st_button">
-          <span>Steam heater 1: <span id="heater_st1">NaN</span></span>
-          <button id="heater_st" onclick="keySendPOST(this.id)">ON/OFF</button>
-        </div>
-        <div class="valve_button">
-          <span>Steam valve: <span id="valve">NaN</span></span>
-          <button id="valve" onclick="keySendPOST(this.id)">OPEN/CLOSE</button>
-        </div>
-      </div>
-      <div class="files_body">
-        <div class="save_active">
-          <span class="save_curr_state">
-            Data save: <span id="save">Inactive</span>
-            </span>
-          <button id="save" onclick="keySendPOST(this.id)">ON/OFF</button>
-        </div>
-      </div>
-      <div class="download_button">
-        <button id="download" type="button" onclick="downloadFile()">
-          Download last data file
-        </button>
+
+  <div class="left_column_div">
+    <div class="stop_button">
+      <button id="emergency_stop" onclick="keySendPOST(this.id)">
+        EMERGENCY STOP
+      </button>
+    </div>
+    <div>
+      <label for="temp_setpoint">Temperature setpoint:</label><br />
+      <input type="number" id="temp_setpoint" name="temp_setpoint" /><br />
+      <button onclick="sendSetpoints()">Submit temp setpoint</button><br /><br />
+    </div>
+    <div class="files_body">
+      <div class="save_active">
+        <span class="save_curr_state"
+          >Data save: <span id="save">Inactive</span></span
+        >
+        <button id="save" onclick="keySendPOST(this.id)">ON/OFF</button>
       </div>
     </div>
+    <div class="download_button">
+      <button id="download" type="button" onclick="">
+        Download last data file
+      </button>
+    </div>
+    <div>
+      <table>
+        <th>Current setpoint</th>
+        <tr>
+          <td>Temperature</td>
+          <td><span id="curr_temp_set">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Pressure</td>
+          <td><span id="curr_press_set">NaN</span></td>
+          <td>[bar]</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <table class="params_table">
+        <tr>
+          <th>Parameter</th>
+          <th>Value</th>
+          <th>Unit</th>
+        </tr>
+        <tr>
+          <td>Water temp</td>
+          <td><span id="water_temp">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Steam temp (sensor 1)</td>
+          <td><span id="steam_temp_1">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Steam temp (sensor 2)</td>
+          <td><span id="steam_temp_2">NaN</span></td>
+          <td>[&#8451;]</td>
+        </tr>
+        <tr>
+          <td>Pressure</td>
+          <td><span id="pressure">NaN</span></td>
+          <td>[bar]</td>
+        </tr>
+        <tr>
+          <th>Electric parameters (Phase 1)</th>
+        </tr>
+        <tr>
+          <td>Voltage</td>
+          <td><span id="voltage_ph1">NaN</span></td>
+          <td>[V]</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td><span id="current_ph1">NaN</span></td>
+          <td>[A]</td>
+        </tr>
+        <tr>
+          <td>Active power</td>
+          <td><span id="active_power_ph1">NaN</span></td>
+          <td>[kW]</td>
+        </tr>
+        <tr>
+          <th>Electric parameters (Phase 2)</th>
+        </tr>
+        <tr>
+          <td>Voltage</td>
+          <td><span id="voltage_ph2">NaN</span></td>
+          <td>[V]</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td><span id="current_ph2">NaN</span></td>
+          <td>[A]</td>
+        </tr>
+        <tr>
+          <td>Active power</td>
+          <td><span id="active_power_ph2">NaN</span></td>
+          <td>[kW]</td>
+        </tr>
+        <tr>
+          <th>Electric parameters (Phase 3)</th>
+        </tr>
+        <tr>
+          <td>Voltage</td>
+          <td><span id="voltage_ph3">NaN</span></td>
+          <td>[V]</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td><span id="current_ph3">NaN</span></td>
+          <td>[A]</td>
+        </tr>
+        <tr>
+          <td>Active power</td>
+          <td><span id="active_power_ph3">NaN</span></td>
+          <td>[kW]</td>
+        </tr>
+      </table>
+    </div>
+    <div class="control_buttons">
+      <div class="heater_w1_button">
+        <span>Water heater 1: <span id="heater_1">NaN</span></span>
+        <button id="heater_w1" onclick="keySendPOST(this.id)">ON/OFF</button>
+      </div>
+      <div class="heater_w2_button">
+        <span>Water heater 2: <span id="heater_2">NaN</span></span>
+        <button id="heater_w2" onclick="keySendPOST(this.id)">ON/OFF</button>
+      </div>
+      <div class="heater_w3_button">
+        <span>Water heater 3: <span id="heater_3">NaN</span></span>
+        <button id="heater_w3" onclick="keySendPOST(this.id)">ON/OFF</button>
+      </div>
+      <div class="heater_st_button">
+        <span>Steam heater 1: <span id="heater_st1">NaN</span></span>
+        <button id="heater_st" onclick="keySendPOST(this.id)">ON/OFF</button>
+      </div>
+      <div class="valve_button">
+        <span>Steam valve: <span id="valve">NaN</span></span>
+        <button id="valve" onclick="keySendPOST(this.id)">OPEN/CLOSE</button>
+      </div>
+    </div>
+  </div>
+  <div class="right_column_div">
     <div id="chartContainer1" style="height: 370px; width: 740px"></div>
     <div id="chartContainer2" style="height: 370px; width: 740px"></div>
     <div id="chartContainer3" style="height: 370px; width: 740px"></div>
+    <div id="chartContainer4" style="height: 370px; width: 740px"></div>
+    <div id="chartContainer_pid" style="height: 370px; width: 740px"></div>
+  </div>
   </body>
 </html>
