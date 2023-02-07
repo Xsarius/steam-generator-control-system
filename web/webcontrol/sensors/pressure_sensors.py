@@ -16,7 +16,7 @@ class Keller23sx():
         corr_data = raw_data[0] | raw_data[1]
         corr_data = struct.unpack('!f', bytes.fromhex('{:x}'.format(corr_data)))[0]
 
-        return int('%.4f' % corr_data)
+        return corr_data
 
     def write(self, register_addr, data):
         return self.socket.write_float(registeraddress=register_addr)
