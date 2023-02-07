@@ -1,4 +1,4 @@
-window.onload = function () {
+function loadCharts () {
     var dps1 = [];
     var dps2 = [];
     var dps3 = [];
@@ -163,3 +163,5 @@ window.onload = function () {
     setInterval(updateChart4, updateInterval);
     setInterval(updateChart5, updateInterval);
   };
+
+  loadCharts();
