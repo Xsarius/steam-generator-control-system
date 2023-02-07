@@ -2,6 +2,8 @@ window.onload = function () {
     var dps1 = [];
     var dps2 = [];
     var dps3 = [];
+    var dps4 = [];
+    var dps5 = [];
     var chart1 = new CanvasJS.Chart("chartContainer1", {
       title: {
         text: "Water tempearature",
