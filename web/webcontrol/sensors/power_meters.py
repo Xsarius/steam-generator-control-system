@@ -1,12 +1,11 @@
 import minimalmodbus, struct
 
 class LUMEL_N27P():
-    def __init__(self, port='/dev/ttyUSB0', baudrate=9600, unit=1, registers_dict={}, transform_unit='8N2'):
+    def __init__(self, port='/dev/ttyUSB0', baudrate=9600, unit=2, registers_dict={}):
         self.registers_dict = registers_dict
         self.socket = minimalmodbus.Instrument(port=port, slaveaddress=unit)
         self.socket.serial.baudrate=baudrate
-        self.socket.serial.timeout = 1
-        self.socket.serial.stopbits = transform_unit[2]
+        self.socket.serial.timeout = 3
 
     def read(self, reg_name):
         data = self.get_register(reg_name)

@@ -57,7 +57,6 @@ LUMEL_CONFIG = {
     'unit_1': 2,
     'unit_2': 3,
     'unit_3': 4,
-    'baudrate': 9600,
     'registers': {
                     'voltage': ['0x6000', 2],
                     'current': ['0x6002', 2],
