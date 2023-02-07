@@ -11,10 +11,10 @@ function reloadData() {
 
   document.getElementById("curr_temp_set").textContent = json_data["curr_temp_set"];
 
-  document.getElementById("water_temp").textContent = json_data["water_temp"];
-  document.getElementById("steam_temp_1").textContent = json_data["steam_temp_1"];
-  document.getElementById("steam_temp_2").textContent = json_data["steam_temp_2"];
-  document.getElementById("pressure").textContent = json_data["pressure"];
+  document.getElementById("water_temp").textContent = parseFloat(json_data["water_temp"]).toFixed(2);
+  document.getElementById("steam_temp_1").textContent = parseFloat(json_data["steam_temp_1"]).toFixed(2);
+  document.getElementById("steam_temp_2").textContent = parseFloat(json_data["steam_temp_2"]).toFixed(2);
+  document.getElementById("pressure").textContent = parseFloat(json_data["pressure"]).toFixed(2);
   // Phase 1
   document.getElementById("voltage_ph1").textContent = json_data["voltage_ph1"];
   document.getElementById("current_ph1").textContent = json_data["current_ph1"];
