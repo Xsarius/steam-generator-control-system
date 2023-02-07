@@ -62,5 +62,5 @@ def pid_loop():
     print(sat_temp)
     print(err)
 
-t1.start()
-t2.start()
+# t1.start()
+# t2.start()
