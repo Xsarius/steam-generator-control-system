@@ -53,6 +53,21 @@ KELLER_CONFIG = {
     'port': '/dev/ttyUSB0',
 }
 
+LUMEL_CONFIG = {
+    'unit_1': 2,
+    'unit_2': 3,
+    'unit_3': 4,
+    'baudrate': 9600,
+    'registers': {
+                    'voltage': ['0x6000', 2],
+                    'current': ['0x6002', 2],
+                    'active_power': ['0x6004', 2],
+                    'reactive_power': ['0x6006', 2],
+                    'consumed_active_energy': ['0x6028', 2],
+    },
+    'port': '/dev/ttyUSB0',
+}
+
 # Maximal parameters values before soft shutdown
 MAX_TEMP = 250  #*C
 MAX_PRESSURE = 12 #bar
