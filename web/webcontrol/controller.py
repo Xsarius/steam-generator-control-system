@@ -125,11 +125,11 @@ class SGController:
             'heater_w3': self.heater_w3.state(),
             'heater_st': self.heater_s1.state(),
             'valve': self.valve.state(),
-            'save': int(self.data_save_started)
+            'save': int(self.data_save_started),
+            'pressure': self.pressure_sensor.read('pressure'),
         }
 
         if(not DEBUG):
-            output['pressure'] = self.pressure_sensor.read('pressure')
             output['pid_signal'] = 0
             output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
             output['current_ph1'] = self.power_meter_ph1.read('current')
