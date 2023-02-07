@@ -28,13 +28,15 @@ class Index(View):
         if(controller.control_params['manual_mode']):
             controller.control_loop()
 
-        # if(controller.control_params['temp_setpoint']):
+        if(controller.control_params['temp_setpoint']):
+            controller.pid.setpoint = controller.control_params['temp_setpoint']
 
         if(controller.control_params['save']
             and not controller.data_save_started):
             controller.start_data_save()
 
-        if(not controller.control_params['save']):
+        if(not controller.control_params['save']
+            and controller.data_save_started):
             controller.stop_data_save()
 
         controller.control_loop()
