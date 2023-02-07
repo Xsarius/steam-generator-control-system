@@ -1,9 +1,13 @@
-function loadCharts () {
+window.onload = function () {
     var dps1 = [];
     var dps2 = [];
     var dps3 = [];
     var dps4 = [];
     var dps5 = [];
+
+    var updateInterval = 1000;
+    var dataLength = 1;
+
     var chart1 = new CanvasJS.Chart("chartContainer1", {
       title: {
         text: "Water tempearature",
@@ -63,9 +67,6 @@ function loadCharts () {
         },
       ],
     });
-
-    var updateInterval = 1000;
-    var dataLength = 1;
 
     var xVal1 = 0;
     var yVal1 = 0;
@@ -163,5 +164,3 @@ function loadCharts () {
     setInterval(updateChart4, updateInterval);
     setInterval(updateChart5, updateInterval);
   };
-
-  loadCharts();
