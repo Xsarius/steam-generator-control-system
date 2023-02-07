@@ -25,7 +25,7 @@ def save_data_to_db(data):
         )
 
 
-@t1.job(interval=datetime.timedelta(seconds=1))
+@t1.job(interval=datetime.timedelta(milliseconds=200))
 def watchdog():
     if(controller.temp_sensor_w1 >= MAX_TEMP or
         controller.temp_sensor_s1 >= MAX_TEMP or
@@ -42,4 +42,6 @@ def savedata():
     else:
         pass
 
-# @t1.job(interval=datetime.timedelta(seconds=200))
+@t1.job(interval=datetime.timedelta(seconds=200))
+def pid_loop():
+    pass
