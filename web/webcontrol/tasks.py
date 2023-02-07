@@ -1,12 +1,15 @@
 from web.settings import DEBUG, MAX_TEMP, MAX_PRESSURE
-import datetime, simple_pid, os
-from .controller import SGController, t1, curr_id
+import datetime, timeloop
+from .controller import SGController, curr_id
 from .models import SteamGenerator
+from pyXSteam.XSteam import XSteam
 
 controller = SGController()
-pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
+steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
-t1.start()
+# Periodic task handlers
+t1 = timeloop.Timeloop()
+t2 = timeloop.Timeloop()
 
 @t1.job(interval=datetime.timedelta(milliseconds=500))
 def savedata():
@@ -31,7 +34,7 @@ def savedata():
 
         SteamGenerator.save()
 
-@t1.job(interval=datetime.timedelta(milliseconds=1000))
+@t2.job(interval=datetime.timedelta(milliseconds=200))
 def watchdog():
     if(controller.temp_sensor_w1 >= MAX_TEMP or
         controller.temp_sensor_s1 >= MAX_TEMP or
@@ -40,7 +43,24 @@ def watchdog():
 
         controller.soft_shutdown()
 
-
-@t1.job(interval=datetime.timedelta(seconds=200))
+@t1.job(interval=datetime.timedelta(seconds=2))
 def pid_loop():
-    pass
+    curr_temp = controller.temp_sensor_s2.getTemp()
+    curr_press = controller.pressure_sensor.read('pressure')
+
+    sat_temp = steamTable.tsat_p(curr_press)
+    err = controller.pid(curr_temp)
+
+    if sat_temp <= curr_temp:
+        # Liquid to gas phase change
+        pass
+
+    else:
+        # Liquid heating
+        pass
+
+    print(sat_temp)
+    print(err)
+
+t1.start()
+t2.start()

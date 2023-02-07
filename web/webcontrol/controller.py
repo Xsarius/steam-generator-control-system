@@ -1,29 +1,20 @@
 from web.settings import DEBUG, PINS, KELLER_CONFIG
 from webcontrol.sensors import devices, pressure_sensors, temp_sensors
 from collections import defaultdict
-import RPi.GPIO as gpio
-import timeloop, time
+import RPi.GPIO as gpio, simple_pid, os
 from webcontrol.models import SteamGenerator
-
-# Periodic task handlers
-t1 = timeloop.Timeloop()
-
-t1.start()
 
 curr_id = 0
 
 class SGController:
-    def __init__(self, P_coeff = 1, I_coeff = 1, D_coeff = 0):
+    def __init__(self):
         print("SGcontroller setup started.")
         failed_to_connect = {}
-        self.control_params = defaultdict(int)
         gpio.setmode(gpio.BCM)
+
+        self.control_params = defaultdict(int)
         self.data_save_started = False
-        self.pid_coeffs = {
-            'P': P_coeff,
-            'I': I_coeff,
-            'D': D_coeff,
-        }
+        self.pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
@@ -81,9 +72,6 @@ class SGController:
     def set_commands(self, commands):
         commands_changed = 0
 
-        if(DEBUG):
-            print("self commands set")
-
         if(self.control_commands['heater_1_power'] != commands['heater_1_power']):
             self.control_commands['heater_1_power'] = commands['heater_1_power']
             commands_changed += 1
@@ -104,15 +92,9 @@ class SGController:
             self.control_commands['valve'] = commands['valve']
             commands_changed += 1
 
-        if(DEBUG):
-            print(commands_changed)
-
         return commands_changed
 
     def get_output(self):
-        if(DEBUG):
-            print("controller output")
-
         output = {
             'water_temp': self.temp_sensor_w1.getTemp(),
             'steam_temp_1': self.temp_sensor_s1.getTemp(),
@@ -141,9 +123,6 @@ class SGController:
         return output
 
     def control_loop(self):
-        if(DEBUG):
-            print("Control loop.\n")
-
         if(self.control_params['heater_st']):
             self.heater_s1.on()
         else:
@@ -189,8 +168,6 @@ class SGController:
         self.data_save_started = False
 
     def emergency_shutdown(self):
-        if(DEBUG):
-            print("Emergency stop")
         pass
 
     def get_data_from_db(self):

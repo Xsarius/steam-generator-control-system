@@ -29,7 +29,6 @@ class Index(View):
             controller.control_loop()
 
         # if(controller.control_params['temp_setpoint']):
-            
 
         if(controller.control_params['save']
             and not controller.data_save_started):
