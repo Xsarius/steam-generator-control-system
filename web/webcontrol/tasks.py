@@ -55,17 +55,17 @@ def savedata():
 
 @t2.job(interval=datetime.timedelta(milliseconds=1000))
 def watchdog():
-    if(controller.temp_sensor_w1.getTemp() >= MAX_TEMP or
-        controller.temp_sensor_s1.getTemp() >= MAX_TEMP or
-        controller.temp_sensor_s2.getTemp() >= MAX_TEMP or
-        controller.pressure_sensor.read('pressure') >= MAX_PRESSURE):
+    if(controller.output['water_temp'] >= MAX_TEMP or
+        controller.output['steam_temp_1'] >= MAX_TEMP or
+        controller.output['steam_temp_2'] >= MAX_TEMP or
+        controller.output['pressure'] >= MAX_PRESSURE):
 
         controller.soft_shutdown()
 
 @t1.job(interval=datetime.timedelta(seconds=2))
 def pid_loop():
-    curr_temp = controller.temp_sensor_s2.getTemp()
-    curr_press = controller.pressure_sensor.read('pressure')
+    curr_temp = controller.output['steam_temp_1']
+    curr_press = controller.output['pressure']
 
     sat_temp = steamTable.tsat_p(curr_press)
     err = controller.pid(curr_temp)
@@ -81,6 +81,6 @@ def pid_loop():
     print(sat_temp)
     print(err)
 
-# t1.start()
-# t2.start()
+t1.start()
+t2.start()
 t3.start()
