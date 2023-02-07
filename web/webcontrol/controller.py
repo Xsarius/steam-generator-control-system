@@ -1,5 +1,5 @@
-from web.settings import DEBUG, PINS, KELLER_CONFIG
-from webcontrol.sensors import devices, pressure_sensors, temp_sensors
+from web.settings import DEBUG, PINS, KELLER_CONFIG, LUMEL_CONFIG
+from webcontrol.sensors import devices, pressure_sensors, temp_sensors, power_meters
 from collections import defaultdict
 import RPi.GPIO as gpio, simple_pid, os
 from webcontrol.models import SteamGenerator
@@ -64,6 +64,27 @@ class SGController:
             failed_to_connect["Heater: steam"] = "connected"
         except:
             failed_to_connect["Heater: steam"] = "failed"
+        try:
+            self.stop_pin = devices.Heater_SSR(pinNum=PINS['STOP'])
+            failed_to_connect["Stop pin"] = "active"
+            self.stop_pin.on()
+        except:
+            failed_to_connect["Stop pin"] = "inactive"
+        try:
+            self.self.power_meter_ph1 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            failed_to_connect["Power meter 1"] = "connected"
+        except:
+            failed_to_connect["Power meter 1"] = "failed"
+        try:
+            self.self.power_meter_ph2 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            failed_to_connect["Power meter 2"] = "connected"
+        except:
+            failed_to_connect["Power meter 2"] = "failed"
+        try:
+            self.self.power_meter_ph3 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            failed_to_connect["Power meter 3"] = "connected"
+        except:
+            failed_to_connect["Power meter 3"] = "failed"
 
         print("SG controller setup finished.")
         print("Result:")
@@ -110,15 +131,15 @@ class SGController:
         if(not DEBUG):
             output['pressure'] = self.pressure_sensor.read('pressure')
             output['pid_signal'] = 0
-            # output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
-            # output['current_ph1'] = self.power_meter_ph1.read('current')
-            # output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
-            # output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
-            # output['current_ph2'] = self.power_meter_ph2.read('current')
-            # output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
-            # output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
-            # output['current_ph3'] = self.power_meter_ph3.read('current')
-            # output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
+            output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
+            output['current_ph1'] = self.power_meter_ph1.read('current')
+            output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
+            output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
+            output['current_ph2'] = self.power_meter_ph2.read('current')
+            output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
+            output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
+            output['current_ph3'] = self.power_meter_ph3.read('current')
+            output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
 
         return output
 
@@ -168,7 +189,7 @@ class SGController:
         self.data_save_started = False
 
     def emergency_shutdown(self):
-        pass
+        self.stop_pin.off()
 
     def get_data_from_db(self):
         try:
