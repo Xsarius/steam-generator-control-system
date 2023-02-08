@@ -55,24 +55,24 @@ def watchdog():
 
         controller.soft_shutdown()
 
-@t1.job(interval=datetime.timedelta(seconds=2))
-def pid_loop():
-    curr_temp = controller.output['steam_temp_1']
-    curr_press = controller.output['pressure']
+# @t1.job(interval=datetime.timedelta(seconds=2))
+# def pid_loop():
+#     curr_temp = controller.output['steam_temp_1']
+#     curr_press = controller.output['pressure']
 
-    sat_temp = steamTable.tsat_p(curr_press)
-    err = controller.pid(curr_temp)
+#     sat_temp = steamTable.tsat_p(curr_press)
+#     err = controller.pid(curr_temp)
 
-    if sat_temp <= curr_temp:
-        # Liquid to gas phase change
-        pass
+#     if sat_temp <= curr_temp:
+#         # Liquid to gas phase change
+#         pass
 
-    else:
-        # Liquid heating
-        pass
+#     else:
+#         # Liquid heating
+#         pass
 
-    print(sat_temp)
-    print(err)
+#     print(sat_temp)
+#     print(err)
 
 
 @t2.job(interval=datetime.timedelta(milliseconds=500))
