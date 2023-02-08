@@ -51,6 +51,7 @@ class UpdateData(View):
             file_path = str(curr_id) + ".txt"
             with open(file_path, "a") as file:
                 json.dump(controller.output, file)
+                print(controller.output)
         return JsonResponse(res)
 
 class DownloadFileView(View):
