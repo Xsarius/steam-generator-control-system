@@ -8,11 +8,11 @@ controller = SGController()
 steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
 # Periodic task handlers
+loops_started = False
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
-t3 = timeloop.Timeloop()
 
-@t3.job(interval=datetime.timedelta(seconds=1))
+@t1.job(interval=datetime.timedelta(seconds=1))
 def set_output():
     try:
         controller.output = {
@@ -26,34 +26,21 @@ def set_output():
             'valve': controller.valve.state(),
             'save': int(controller.data_save_started),
             'pressure': controller.pressure_sensor.read('pressure'),
+            #     output['pid_signal'] = 0
+        #     output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
+        #     output['current_ph1'] = self.power_meter_ph1.read('current')
+        #     output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
+        #     output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
+        #     output['current_ph2'] = self.power_meter_ph2.read('current')
+        #     output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
+        #     output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
+        #     output['current_ph3'] = self.power_meter_ph3.read('current')
+        #     output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
         }
     except:
         pass
 
-@t1.job(interval=datetime.timedelta(milliseconds=500))
-def savedata():
-    if controller.data_save_started:
-        if(DEBUG):
-            print("Data save active.\n")
-
-        data = controller.get_output()
-
-        SteamGenerator.objects.create(
-            water_temp = data['water_temp'],
-            steam_temp_1 = data['steam_temp_1'],
-            steam_temp_2 = data['steam_temp_2'],
-            pressure = data['pressure'],
-            heater_water1_power = data['heater_1'],
-            heater_water2_power = data['heater_2'],
-            heater_water3_power = data['heater_3'],
-            heater_steam_power = data['heater_st'],
-            valve = data['valve'],
-            measurement_num = curr_id
-            )
-
-        SteamGenerator.save()
-
-@t2.job(interval=datetime.timedelta(milliseconds=1000))
+@t1.job(interval=datetime.timedelta(seconds=1))
 def watchdog():
     if(controller.output['water_temp'] >= MAX_TEMP or
         controller.output['steam_temp_1'] >= MAX_TEMP or
@@ -81,6 +68,31 @@ def pid_loop():
     print(sat_temp)
     print(err)
 
-t1.start()
-t2.start()
-t3.start()
+
+@t2.job(interval=datetime.timedelta(milliseconds=500))
+def savedata():
+    if controller.data_save_started:
+        if(DEBUG):
+            print("Data save active.\n")
+
+        data = controller.get_output()
+
+        SteamGenerator.objects.create(
+            water_temp = data['water_temp'],
+            steam_temp_1 = data['steam_temp_1'],
+            steam_temp_2 = data['steam_temp_2'],
+            pressure = data['pressure'],
+            heater_water1_power = data['heater_1'],
+            heater_water2_power = data['heater_2'],
+            heater_water3_power = data['heater_3'],
+            heater_steam_power = data['heater_st'],
+            valve = data['valve'],
+            measurement_num = curr_id
+            )
+
+        SteamGenerator.save()
+
+if not loops_started:
+    t1.start()
+    t2.start()
+    loops_started = True

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse, FileResponse, HttpResponseBadRequest
-from web.settings import DEBUG, DOWNLOAD_FILES_PATH
-from webcontrol.tasks import controller
+from web.settings import DOWNLOAD_FILES_PATH
+from webcontrol.tasks import controller, curr_id
 import os
 
 class Index(View):
@@ -46,7 +46,11 @@ class Index(View):
 
 class UpdateData(View):
     def get(self, request, *args, **kwargs):
-        res = controller.get_output()
+        res = controller.output
+        if controller.data_save_started:
+            file_path = os.path.join(DOWNLOAD_FILES_PATH, "08_02_23_test", str(curr_id))
+            with open(file_path, "w+") as file:
+                file.write(controller.output)
         return JsonResponse(res)
 
 class DownloadFileView(View):

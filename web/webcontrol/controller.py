@@ -72,17 +72,17 @@ class SGController:
         except:
             failed_to_connect["Stop pin"] = "inactive"
         try:
-            self.self.power_meter_ph1 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            self.power_meter_ph1 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
             failed_to_connect["Power meter 1"] = "connected"
         except:
             failed_to_connect["Power meter 1"] = "failed"
         try:
-            self.self.power_meter_ph2 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            self.power_meter_ph2 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
             failed_to_connect["Power meter 2"] = "connected"
         except:
             failed_to_connect["Power meter 2"] = "failed"
         try:
-            self.self.power_meter_ph3 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            self.power_meter_ph3 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
             failed_to_connect["Power meter 3"] = "connected"
         except:
             failed_to_connect["Power meter 3"] = "failed"
@@ -94,44 +94,27 @@ class SGController:
     def set_commands(self, commands):
         commands_changed = 0
 
-        if(self.control_commands['heater_1_power'] != commands['heater_1_power']):
-            self.control_commands['heater_1_power'] = commands['heater_1_power']
+        if(self.control_params['heater_1_power'] != commands['heater_1_power']):
+            self.control_params['heater_1_power'] = commands['heater_1_power']
             commands_changed += 1
 
-        if(self.control_commands['heater_2_power'] != commands['heater_2_power']):
-            self.control_commands['heater_2_power'] = commands['heater_2_power']
+        if(self.control_params['heater_2_power'] != commands['heater_2_power']):
+            self.control_params['heater_2_power'] = commands['heater_2_power']
             commands_changed += 1
 
-        if(self.control_commands['heater_3_power'] != commands['heater_3_power']):
-            self.control_commands['heater_3_power'] = commands['heater_3_power']
+        if(self.control_params['heater_3_power'] != commands['heater_3_power']):
+            self.control_params['heater_3_power'] = commands['heater_3_power']
             commands_changed += 1
 
-        if(self.control_commands['heater_st_power'] != commands['heater_steam_power']):
-            self.control_commands['heater_st_power'] = commands['heater_steam_power']
+        if(self.control_params['heater_st_power'] != commands['heater_steam_power']):
+            self.control_params['heater_st_power'] = commands['heater_steam_power']
             commands_changed += 1
 
-        if(self.control_commands['valve'] != commands['valve']):
-            self.control_commands['valve'] = commands['valve']
+        if(self.control_params['valve'] != commands['valve']):
+            self.control_params['valve'] = commands['valve']
             commands_changed += 1
 
         return commands_changed
-
-    def get_output(self):
-
-
-        # if(not DEBUG):
-        #     output['pid_signal'] = 0
-        #     output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
-        #     output['current_ph1'] = self.power_meter_ph1.read('current')
-        #     output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
-        #     output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
-        #     output['current_ph2'] = self.power_meter_ph2.read('current')
-        #     output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
-        #     output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
-        #     output['current_ph3'] = self.power_meter_ph3.read('current')
-        #     output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
-
-        return self.output
 
     def control_loop(self):
         if(self.control_params['heater_st']):
