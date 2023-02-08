@@ -48,7 +48,7 @@ class UpdateData(View):
     def get(self, request, *args, **kwargs):
         res = controller.output
         if controller.data_save_started:
-            file_path = str(curr_id) + ".txt"
+            file_path = "test_08_02_23.txt"
             with open(file_path, "a") as file:
                 json.dump(controller.output, file)
                 print(controller.output)
