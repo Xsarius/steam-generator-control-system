@@ -1,5 +1,5 @@
 from web.settings import DEBUG, MAX_TEMP, MAX_PRESSURE
-import datetime, timeloop
+import datetime, timeloop, time
 from .controller import SGController, curr_id
 from .models import SteamGenerator
 from pyXSteam.XSteam import XSteam
@@ -34,14 +34,14 @@ def set_output():
     try:
         controller.output += {
             'voltage_ph1': controller.power_meter_ph1.read('voltage'),
-            'current_ph1': controller.power_meter_ph1.read('current'),
-            'active_power_ph1': controller.power_meter_ph1.read('active_power'),
-            'voltage_ph2': controller.power_meter_ph2.read('voltage'),
-            'current_ph2': controller.power_meter_ph2.read('current'),
-            'active_power_ph2': controller.power_meter_ph2.read('active_power'),
-            'voltage_ph3': controller.power_meter_ph3.read('voltage'),
-            'current_ph3': controller.power_meter_ph3.read('current'),
-            'active_power_ph3': controller.power_meter_ph3.read('active_power'),
+            # 'current_ph1': controller.power_meter_ph1.read('current'),
+            # 'active_power_ph1': controller.power_meter_ph1.read('active_power'),
+            # 'voltage_ph2': controller.power_meter_ph2.read('voltage'),
+            # 'current_ph2': controller.power_meter_ph2.read('current'),
+            # 'active_power_ph2': controller.power_meter_ph2.read('active_power'),
+            # 'voltage_ph3': controller.power_meter_ph3.read('voltage'),
+            # 'current_ph3': controller.power_meter_ph3.read('current'),
+            # 'active_power_ph3': controller.power_meter_ph3.read('active_power'),
         }
     except:
         print("2")
