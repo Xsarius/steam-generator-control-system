@@ -5,7 +5,7 @@ function KeyPress(e) {
     // Soft stop - ctrl + c
     else if (evtobj.keyCode == 67 && evtobj.ctrlKey) curr_vals['soft_stop'] = 1;
 
-    sendPOST();
+    sendPOST(curr_vals, '/');
 }
 
 document.onkeydown = KeyPress;

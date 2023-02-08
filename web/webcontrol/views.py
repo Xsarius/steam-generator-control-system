@@ -48,8 +48,10 @@ class UpdateData(View):
     def get(self, request, *args, **kwargs):
         res = controller.output
         if controller.data_save_started:
+            print("here1")
             file_path = os.path.join(DOWNLOAD_FILES_PATH, "08_02_23_test", str(curr_id))
-            with open(file_path, "w+") as file:
+            with open(file_path, "w") as file:
+                print("here2")
                 file.write(controller.output)
         return JsonResponse(res)
 
