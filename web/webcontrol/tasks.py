@@ -26,16 +26,16 @@ def set_output():
             'valve': controller.valve.state(),
             'save': int(controller.data_save_started),
             'pressure': controller.pressure_sensor.read('pressure'),
-            #     output['pid_signal'] = 0
-        #     output['voltage_ph1'] = self.power_meter_ph1.read('voltage')
-        #     output['current_ph1'] = self.power_meter_ph1.read('current')
-        #     output['active_power_ph1'] = self.power_meter_ph1.read('active_power')
-        #     output['voltage_ph2'] = self.power_meter_ph2.read('voltage')
-        #     output['current_ph2'] = self.power_meter_ph2.read('current')
-        #     output['active_power_ph2'] = self.power_meter_ph2.read('active_power')
-        #     output['voltage_ph3'] = self.power_meter_ph3.read('voltage')
-        #     output['current_ph3'] = self.power_meter_ph3.read('current')
-        #     output['active_power_ph3'] = self.power_meter_ph3.read('active_power')
+            'pid_signal': 0,
+            'voltage_ph1': controller.power_meter_ph1.read('voltage'),
+            'current_ph1': controller.power_meter_ph1.read('current'),
+            'active_power_ph1': controller.power_meter_ph1.read('active_power'),
+            'voltage_ph2': controller.power_meter_ph2.read('voltage'),
+            'current_ph2': controller.power_meter_ph2.read('current'),
+            'active_power_ph2': controller.power_meter_ph2.read('active_power'),
+            'voltage_ph3': controller.power_meter_ph3.read('voltage'),
+            'current_ph3': controller.power_meter_ph3.read('current'),
+            'active_power_ph3': controller.power_meter_ph3.read('active_power'),
         }
     except:
         pass
