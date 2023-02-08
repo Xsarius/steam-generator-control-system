@@ -58,11 +58,11 @@ LUMEL_CONFIG = {
     'unit_2': 3,
     'unit_3': 4,
     'registers': {
-                    'voltage': ['0x6000', 2],
-                    'current': ['0x6002', 2],
-                    'active_power': ['0x6004', 2],
-                    'reactive_power': ['0x6006', 2],
-                    'consumed_active_energy': ['0x6028', 2],
+                    'voltage': ['0x1770', 2],
+                    'current': ['0x1772', 2],
+                    'active_power': ['0x1774', 2],
+                    'reactive_power': ['0x1776', 2],
+                    'consumed_active_energy': ['0x178C', 2],
     },
     'port': '/dev/ttyUSB0',
 }
