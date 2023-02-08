@@ -29,22 +29,22 @@ services:
     depends_on:
       - web
     restart: "on-failure"
-  redis:
-    build: ./redis
-    command: redis-server redis.conf
-  celery:
-    restart: always
-    build: ./web
-    command: celery --app=web worker -E --loglevel=INFO
-    privileged: true
-    volumes:
-      - ./web:/home/src/web
-    depends_on:
-      - web
-      - redis
-      - db
-    env_file:
-      - ./.env
+  # redis:
+  #   build: ./redis
+  #   command: redis-server redis.conf
+  # celery:
+  #   restart: always
+  #   build: ./web
+  #   command: celery --app=web worker -E --loglevel=INFO
+  #   privileged: true
+  #   volumes:
+  #     - ./web:/home/src/web
+  #   depends_on:
+  #     - web
+  #     - redis
+  #     - db
+  #   env_file:
+  #     - ./.env
   db:
     build: ./postgres
     volumes:
