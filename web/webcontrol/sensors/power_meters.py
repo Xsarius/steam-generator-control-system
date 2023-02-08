@@ -5,7 +5,6 @@ class LUMEL_N27P():
         self.registers_dict = registers_dict
         self.socket = minimalmodbus.Instrument(port=port, slaveaddress=unit, close_port_after_each_call=True)
         self.socket.serial.baudrate=baudrate
-        self.socket.serial = 
         self.socket.serial.timeout = 1
 
     def read(self, reg_name):
