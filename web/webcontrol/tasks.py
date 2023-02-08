@@ -27,6 +27,12 @@ def set_output():
             'save': int(controller.data_save_started),
             'pressure': controller.pressure_sensor.read('pressure'),
             'pid_signal': 0,
+        }
+    except:
+        print("1")
+
+    try:
+        controller.output += {
             'voltage_ph1': controller.power_meter_ph1.read('voltage'),
             'current_ph1': controller.power_meter_ph1.read('current'),
             'active_power_ph1': controller.power_meter_ph1.read('active_power'),
@@ -38,7 +44,7 @@ def set_output():
             'active_power_ph3': controller.power_meter_ph3.read('active_power'),
         }
     except:
-        pass
+        print("2")
 
 @t1.job(interval=datetime.timedelta(seconds=1))
 def watchdog():
