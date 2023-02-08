@@ -49,7 +49,7 @@ class UpdateData(View):
         res = controller.output
         if controller.data_save_started:
             print("here1")
-            file_path = os.path.join(DOWNLOAD_FILES_PATH, str(curr_id) + ".txt")
+            file_path = str(curr_id) + ".txt"
             with open(file_path, "a") as file:
                 print("here2")
                 file.write(controller.output)
