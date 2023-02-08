@@ -3,7 +3,7 @@ from django.views import View
 from django.http import JsonResponse, FileResponse, HttpResponseBadRequest
 from web.settings import DOWNLOAD_FILES_PATH
 from webcontrol.tasks import controller, curr_id
-import os
+import os, json
 
 class Index(View):
 
@@ -48,11 +48,9 @@ class UpdateData(View):
     def get(self, request, *args, **kwargs):
         res = controller.output
         if controller.data_save_started:
-            print("here1")
             file_path = str(curr_id) + ".txt"
             with open(file_path, "a") as file:
-                print("here2")
-                file.write(controller.output)
+                json.dump(controller.output, file)
         return JsonResponse(res)
 
 class DownloadFileView(View):
