@@ -28,15 +28,15 @@ def set_output():
 
     controller.output += {
             'pressure': controller.pressure_sensor.read('pressure'),
-            # 'voltage_ph1': controller.power_meter.read('voltage_ph1'),
-            # 'current_ph1': controller.power_meter.read('current_ph1'),
-            # 'active_power_ph1': controller.power_meter.read('active_power_ph1'),
-            # 'voltage_ph2': controller.power_meter.read('voltage_ph2'),
-            # 'current_ph2': controller.power_meter.read('current_ph2'),
-            # 'active_power_ph2': controller.power_meter.read('active_power_ph2'),
-            # 'voltage_ph3': controller.power_meter.read('voltage_ph3'),
-            # 'current_ph3': controller.power_meter.read('current_ph3'),
-            # 'active_power_ph3': controller.power_meter.read('active_power_ph3'),
+            'voltage_ph1': controller.power_meter.read('voltage_ph1'),
+            'current_ph1': controller.power_meter.read('current_ph1'),
+            'active_power_ph1': controller.power_meter.read('active_power_ph1'),
+            'voltage_ph2': controller.power_meter.read('voltage_ph2'),
+            'current_ph2': controller.power_meter.read('current_ph2'),
+            'active_power_ph2': controller.power_meter.read('active_power_ph2'),
+            'voltage_ph3': controller.power_meter.read('voltage_ph3'),
+            'current_ph3': controller.power_meter.read('current_ph3'),
+            'active_power_ph3': controller.power_meter.read('active_power_ph3'),
         }
 
     with open(BACKUP_FILE, "a") as backup_file:
