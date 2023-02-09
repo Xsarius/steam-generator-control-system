@@ -54,13 +54,18 @@ KELLER_CONFIG = {
 }
 
 LUMEL_CONFIG = {
-    'unit_1': 2,
-    'unit_2': 3,
-    'unit_3': 4,
+    'unit': 2,
     'registers': {
-                    'voltage': ['0x1770', 2],
-                    'current': ['0x1772', 2],
-                    'active_power': ['0x1774', 2],
+                    'voltage_ph1': ['0x1B58', 2],
+                    'current_ph1': ['0x1B5A', 2],
+                    'active_power_ph1': ['0x1B5C', 2],
+                    'voltage_ph2': ['0x1B6A', 2],
+                    'current_ph2': ['0x1B6C', 2],
+                    'active_power_ph2': ['0x1B6E', 2],
+                    'voltage_ph3': ['0x1B7C', 2],
+                    'current_ph3': ['0x1B7E', 2],
+                    'active_power_ph3': ['0x1B80', 2],
+
     },
     'port': '/dev/ttyUSB0',
 }
@@ -168,7 +173,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-DOWNLOAD_FILES_PATH = os.path.join(BASE_DIR, "files")
+BACKUP_FILE = "backup.txt"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

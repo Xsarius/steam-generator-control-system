@@ -4,8 +4,6 @@ from collections import defaultdict
 import RPi.GPIO as gpio, simple_pid, os
 from webcontrol.models import SteamGenerator
 
-curr_id = 0
-
 class SGController:
     def __init__(self):
         print("SGcontroller setup started.")
@@ -15,7 +13,8 @@ class SGController:
         self.control_params = defaultdict(int)
         self.data_save_started = False
         self.pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
-        self.output = defaultdict(int)
+        self.output = defaultdict(float)
+        self.curr_measurement_id = 0
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
@@ -68,53 +67,17 @@ class SGController:
         try:
             self.stop_pin = devices.Heater_SSR(pinNum=PINS['STOP'])
             failed_to_connect["Stop pin"] = "active"
-            self.stop_pin.on()
         except:
             failed_to_connect["Stop pin"] = "inactive"
         try:
-            self.power_meter_ph1 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
+            self.power_meter = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit'])
             failed_to_connect["Power meter 1"] = "connected"
         except:
             failed_to_connect["Power meter 1"] = "failed"
-        try:
-            self.power_meter_ph2 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
-            failed_to_connect["Power meter 2"] = "connected"
-        except:
-            failed_to_connect["Power meter 2"] = "failed"
-        try:
-            self.power_meter_ph3 = power_meters.LUMEL_N27P(unit=LUMEL_CONFIG['unit_1'])
-            failed_to_connect["Power meter 3"] = "connected"
-        except:
-            failed_to_connect["Power meter 3"] = "failed"
 
         print("SG controller setup finished.")
         print("Result:")
         print(failed_to_connect)
-
-    def set_commands(self, commands):
-        commands_changed = 0
-
-        if(self.control_params['heater_1_power'] != commands['heater_1_power']):
-            self.control_params['heater_1_power'] = commands['heater_1_power']
-            commands_changed += 1
-
-        if(self.control_params['heater_2_power'] != commands['heater_2_power']):
-            self.control_params['heater_2_power'] = commands['heater_2_power']
-            commands_changed += 1
-
-        if(self.control_params['heater_3_power'] != commands['heater_3_power']):
-            self.control_params['heater_3_power'] = commands['heater_3_power']
-            commands_changed += 1
-
-        if(self.control_params['heater_st_power'] != commands['heater_steam_power']):
-            self.control_params['heater_st_power'] = commands['heater_steam_power']
-            commands_changed += 1
-
-        if(self.control_params['valve'] != commands['valve']):
-            self.control_params['valve'] = commands['valve']
-            commands_changed += 1
-
-        return commands_changed
 
     def control_loop(self):
         if(self.control_params['heater_st']):
@@ -142,13 +105,6 @@ class SGController:
         else:
             self.valve.close()
 
-    def soft_shutdown(self):
-        self.heater_w1.off()
-        self.heater_w2.off()
-        self.heater_w3.off()
-        self.heater_s1.off()
-        self.valve.close()
-
     def start_data_save(self):
         try:
             curr_id = SteamGenerator.objects.latest('measurement_num') + 1
@@ -164,11 +120,22 @@ class SGController:
     def emergency_shutdown(self):
         self.stop_pin.off()
 
+    def soft_shutdown(self):
+        self.heater_w1.off()
+        self.heater_w2.off()
+        self.heater_w3.off()
+        self.heater_s1.off()
+        self.valve.close()
+
     def get_data_from_db(self):
         try:
-            curr_id = SteamGenerator.objects.latest('measurement_num')
-        except: 
-            curr_id = 1
-        print(curr_id)
-        data = SteamGenerator.objects.filter(measurement_num=curr_id).all()
+            self.curr_measurement_id = SteamGenerator.objects.latest('measurement_num')
+        except:
+            self.curr_measurement_id = 1
+
+        try:
+            data = SteamGenerator.objects.filter(measurement_num=self.curr_measurement_id).all()
+        except:
+            raise()
+
         return data

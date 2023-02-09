@@ -1,6 +1,6 @@
-from web.settings import DEBUG, MAX_TEMP, MAX_PRESSURE
-import datetime, timeloop, time
-from .controller import SGController, curr_id
+from web.settings import MAX_TEMP, MAX_PRESSURE, BACKUP_FILE
+import datetime, timeloop
+from .controller import SGController
 from .models import SteamGenerator
 from pyXSteam.XSteam import XSteam
 
@@ -8,11 +8,10 @@ controller = SGController()
 steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
 # Periodic task handlers
-loops_started = False
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
 
-@t1.job(interval=datetime.timedelta(seconds=1))
+@t1.job(interval=datetime.timedelta(milliseconds=200))
 def set_output():
     try:
         controller.output = {
@@ -33,18 +32,24 @@ def set_output():
 
     try:
         controller.output += {
-            'voltage_ph1': controller.power_meter_ph1.read('voltage'),
-            # 'current_ph1': controller.power_meter_ph1.read('current'),
-            # 'active_power_ph1': controller.power_meter_ph1.read('active_power'),
-            # 'voltage_ph2': controller.power_meter_ph2.read('voltage'),
-            # 'current_ph2': controller.power_meter_ph2.read('current'),
-            # 'active_power_ph2': controller.power_meter_ph2.read('active_power'),
-            # 'voltage_ph3': controller.power_meter_ph3.read('voltage'),
-            # 'current_ph3': controller.power_meter_ph3.read('current'),
-            # 'active_power_ph3': controller.power_meter_ph3.read('active_power'),
+            'voltage_ph1': controller.power_meter.read('voltage_ph1'),
+            'current_ph1': controller.power_meter.read('current_ph1'),
+            'active_power_ph1': controller.power_meter.read('active_power_ph1'),
+            'voltage_ph2': controller.power_meter.read('voltage_ph2'),
+            'current_ph2': controller.power_meter.read('current_ph2'),
+            'active_power_ph2': controller.power_meter.read('active_power_ph2'),
+            'voltage_ph3': controller.power_meter.read('voltage_ph3'),
+            'current_ph3': controller.power_meter.read('current_ph3'),
+            'active_power_ph3': controller.power_meter.read('active_power_ph3'),
         }
     except:
         print("2")
+
+    with open(BACKUP_FILE, "a") as backup_file:
+        for key, value in controller.output.items():
+            backup_file.write('%s:%s' % (key, value))
+
+        backup_file.write('\n')
 
 @t1.job(interval=datetime.timedelta(seconds=1))
 def watchdog():
@@ -78,27 +83,22 @@ def watchdog():
 @t2.job(interval=datetime.timedelta(milliseconds=500))
 def savedata():
     if controller.data_save_started:
-        if(DEBUG):
-            print("Data save active.\n")
-
-        data = controller.get_output()
+        print("Data save active.\n")
 
         SteamGenerator.objects.create(
-            water_temp = data['water_temp'],
-            steam_temp_1 = data['steam_temp_1'],
-            steam_temp_2 = data['steam_temp_2'],
-            pressure = data['pressure'],
-            heater_water1_power = data['heater_1'],
-            heater_water2_power = data['heater_2'],
-            heater_water3_power = data['heater_3'],
-            heater_steam_power = data['heater_st'],
-            valve = data['valve'],
-            measurement_num = curr_id
+            measurement_num = controller.curr_measurement_id,
+            water_temp = controller.output['water_temp'],
+            steam_temp_1 = controller.output['steam_temp_1'],
+            steam_temp_2 = controller.output['steam_temp_2'],
+            pressure = controller.output['pressure'],
+            heater_water1_power = controller.output['heater_1'],
+            heater_water2_power = controller.output['heater_2'],
+            heater_water3_power = controller.output['heater_3'],
+            heater_steam_power = controller.output['heater_st'],
+            valve = controller.output['valve'],
             )
 
         SteamGenerator.save()
 
-if not loops_started:
-    t1.start()
-    t2.start()
-    loops_started = True
+t1.start()
+t2.start(block=True)

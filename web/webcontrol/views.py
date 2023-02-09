@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import JsonResponse, FileResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 from web.settings import DOWNLOAD_FILES_PATH
 from webcontrol.tasks import controller, curr_id
 import os, json
@@ -47,26 +47,17 @@ class Index(View):
 class UpdateData(View):
     def get(self, request, *args, **kwargs):
         res = controller.output
-        if controller.data_save_started:
-            file_path = "test_08_02_23.txt"
-            with open(file_path, "a") as file:
-                json.dump(controller.output, file)
-                print(controller.output)
+
         return JsonResponse(res)
 
-class DownloadFileView(View):
     def post(self, request):
-        file_name = request.POST.get('file_name')
-        file_data = controller.get_data_from_db()
-        file_path = os.path.join(DOWNLOAD_FILES_PATH, file_name)
+        return HttpResponseBadRequest()
 
-        with open(file_path, "w") as file:
-            file.write(file_data)
-            response = FileResponse(file)
-            response['content_type'] = 'application/octet-stream'
-            response['Content-Disposition'] = 'attachment; filename="{}"'.format(file.file_name)
-
-        return response
-
+class DownloadFileView(View):
     def get(self, request):
         return HttpResponseBadRequest()
+
+    def post(self, request):
+        file_data = controller.get_data_from_db()
+
+        return JsonResponse(file_data)
