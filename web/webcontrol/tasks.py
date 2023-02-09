@@ -93,4 +93,4 @@ def savedata():
         SteamGenerator.save()
 
 t1.start()
-t2.start(block=True)
+t2.start()
