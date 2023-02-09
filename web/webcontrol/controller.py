@@ -67,6 +67,7 @@ class SGController:
         try:
             self.stop_pin = devices.Heater_SSR(pinNum=PINS['STOP'])
             failed_to_connect["Stop pin"] = "active"
+            self.stop_pin.on()
         except:
             failed_to_connect["Stop pin"] = "inactive"
         try:
