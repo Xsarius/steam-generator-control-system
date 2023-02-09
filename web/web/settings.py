@@ -84,7 +84,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webcontrol.apps.WebcontrolConfig',
     'celery',
-    'bootstrap5',
     ]
 
 MIDDLEWARE = [
@@ -116,7 +115,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'web.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
