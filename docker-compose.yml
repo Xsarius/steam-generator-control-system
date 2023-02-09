@@ -13,7 +13,7 @@ services:
         gunicorn web.wsgi:application --bind 0.0.0.0:8000 --worker-class=gevent"
     restart: "on-failure"
     expose:
-      - 8000
+      - 8000x`
     env_file:
       - ./.env
     privileged: true
