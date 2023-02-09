@@ -1,10 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse, HttpResponseBadRequest
-from web.settings import DOWNLOAD_FILES_PATH
-from webcontrol.tasks import controller, curr_id
-import os, json
-
+from webcontrol.tasks import controller
 class Index(View):
 
     def get(self, request, *args, **kwargs):
