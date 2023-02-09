@@ -127,6 +127,11 @@ class SGController:
         else:
             self.valve.close()
 
+        if(self.control_loop['power']):
+            self.stop_pin.on()
+        else:
+            self.stop_pin.off()
+
     def start_data_save(self):
         try:
             curr_id = SteamGenerator.objects.latest('measurement_num') + 1
