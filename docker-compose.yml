@@ -10,7 +10,7 @@ services:
         python3 manage.py makemigrations webcontrol &&
         python3 manage.py makemigrations &&
         python3 manage.py migrate &&
-        gunicorn web.wsgi:application --bind :8000 --worker-class=gevent"
+        gunicorn web.wsgi:application --bind 0.0.0.0:8000 --worker-class=gevent"
     restart: "on-failure"
     env_file:
       - ./.env
@@ -27,9 +27,9 @@ services:
     depends_on:
       - web
     restart: "on-failure"
-  redis:
-    build: ./redis
-    command: redis-server redis.conf
+  # redis:
+  #   build: ./redis
+  #   command: redis-server redis.conf
   # celery:
   #   restart: always
   #   build: ./web
