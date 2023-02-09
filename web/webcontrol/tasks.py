@@ -11,9 +11,8 @@ steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
 
-@t1.job(interval=datetime.timedelta(milliseconds=200))
+@t1.job(interval=datetime.timedelta(milliseconds=500))
 def set_output():
-    try:
         controller.output = {
             'water_temp': controller.temp_sensor_w1.getTemp(),
             'steam_temp_1': controller.temp_sensor_s1.getTemp(),
@@ -24,14 +23,12 @@ def set_output():
             'heater_st': controller.heater_s1.state(),
             'valve': controller.valve.state(),
             'save': int(controller.data_save_started),
-            'pressure': controller.pressure_sensor.read('pressure'),
             'pid_signal': 0,
         }
-    except:
-        print("1")
 
     try:
         controller.output += {
+            'pressure': controller.pressure_sensor.read('pressure'),
             'voltage_ph1': controller.power_meter.read('voltage_ph1'),
             'current_ph1': controller.power_meter.read('current_ph1'),
             'active_power_ph1': controller.power_meter.read('active_power_ph1'),
