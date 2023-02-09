@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webcontrol.apps.WebcontrolConfig',
     'celery',
+    'bootstrap5'
     ]
 
 MIDDLEWARE = [
