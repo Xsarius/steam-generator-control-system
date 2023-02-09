@@ -15,11 +15,11 @@ class Keller23sx():
         raw_data[0] = raw_data[0]<<16
         corr_data = raw_data[0] | raw_data[1]
         corr_data = struct.unpack('!f', bytes.fromhex('{:x}'.format(corr_data)))[0]
-
+        print(corr_data)
         return corr_data
 
-    def write(self, register_addr, data):
-        return self.socket.write_float(registeraddress=register_addr)
+    # def write(self, register_addr, data):
+    #     return self.socket.write_float(registeraddress=register_addr)
 
     def get_register(self, name):
         curr_reg = self.registers_dict[name]

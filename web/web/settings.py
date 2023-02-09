@@ -48,7 +48,6 @@ KELLER_CONFIG = {
     'unit': 1,
     'registers': {
                     'pressure': ['0x0002', 2],
-                    'temp': ['0x0008', 2],
                 },
     'port': '/dev/ttyUSB0',
 }
