@@ -1,6 +1,7 @@
 from django.db import models
 
 class SteamGenerator(models.Model):
+    measurement_num = models.IntegerField(default=0)
     water_temp = models.FloatField(default=0)
     steam_temp_1 = models.FloatField(default=0)
     steam_temp_2 = models.FloatField(default=0)
@@ -10,4 +11,12 @@ class SteamGenerator(models.Model):
     heater_water3_power = models.FloatField(default=0)
     heater_steam_power = models.FloatField(default=0)
     valve = models.CharField(max_length=10, default='closed')
-    measurement_num = models.IntegerField(default=0)
+    voltage_ph1 = models.FloatField(default=0)
+    current_ph1 = models.FloatField(default=0)
+    power_ph1 = models.FloatField(default=0)
+    voltage_ph2 = models.FloatField(default=0)
+    current_ph2 = models.FloatField(default=0)
+    power_ph2 = models.FloatField(default=0)
+    voltage_ph3 = models.FloatField(default=0)
+    current_ph3 = models.FloatField(default=0)
+    power_ph3 = models.FloatField(default=0)

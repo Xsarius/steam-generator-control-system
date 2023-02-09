@@ -13,8 +13,29 @@ class SGController:
         self.control_params = defaultdict(int)
         self.data_save_started = False
         self.pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
-        self.output = defaultdict(float)
         self.curr_measurement_id = 0
+        self.output = {
+        'water_temp': -1,
+        'steam_temp_1': -1,
+        'steam_temp_2': -1,
+        'heater_w1': -1,
+        'heater_w2': -1,
+        'heater_w3': -1,
+        'heater_st': -1,
+        'valve': -1,
+        'save': -1,
+        'pid_signal': -1,
+        'pressure': -1,
+        'voltage_ph1': -1,
+        'current_ph1': -1,
+        'active_power_ph1': -1,
+        'voltage_ph2': -1,
+        'current_ph2': -1,
+        'active_power_ph2': -1,
+        'voltage_ph3': -1,
+        'current_ph3': -1,
+        'active_power_ph3': -1,
+        }
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
