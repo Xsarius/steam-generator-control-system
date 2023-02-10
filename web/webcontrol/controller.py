@@ -127,7 +127,7 @@ class SGController:
         else:
             self.valve.close()
 
-        if(self.control_loop['power']):
+        if(self.control_params['power']):
             self.stop_pin.on()
         else:
             self.stop_pin.off()
