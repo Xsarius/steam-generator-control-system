@@ -37,10 +37,10 @@ PINS = {
     'TEMP_STEAM_2': board.D27,
     'TEMP_WATER_1': board.D22,
     'VALVE_1': 23,
-    'HEATER_1': 24,
+    'HEATER_1': 21,
     'HEATER_2': 25,
     'HEATER_3': 20,
-    'HEATER_STEAM_1': 21,
+    'HEATER_STEAM_1': 24,
     'STOP': 16,
 }
 

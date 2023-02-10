@@ -7,6 +7,7 @@ var curr_vals = {
     save: 0,
     emergency_stop: 0,
     soft_stop: 0,
+    power: 1,
     manual_mode: 0,
 };
 
@@ -44,4 +45,3 @@ function getCookie(cname) {
       },
     });
   }
-  
