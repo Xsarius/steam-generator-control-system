@@ -14,7 +14,7 @@ class SGController:
         self.data_save_started = False
         self.pid = simple_pid.PID(Kp=os.environ.get("P_COEF"),Ki=os.environ.get("I_COEF"), Kd=os.environ.get("D_COEF"))
         self.curr_measurement_id = 0
-        self.output = defaultdict(int)
+        self.output = {}
 
         try:
             self.temp_sensor_w1 = temp_sensors.Pt100_SPI(pinNum=PINS['TEMP_WATER_1'])
