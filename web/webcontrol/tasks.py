@@ -30,9 +30,9 @@ def set_output():
 
         backup_file.write('\n')
 
-# @t1.job(interval=datetime.timedelta(seconds=1))
-# def get_modbus_readouts():
-#         controller.output['pressure'] = int(controller.pressure_sensor.read('pressure')),
+@t1.job(interval=datetime.timedelta(seconds=1))
+def get_modbus_readouts():
+        controller.output['pressure'] = int(controller.pressure_sensor.read('pressure')),
 #         controller.output['voltage_ph1'] = int(controller.power_meter.read('voltage_ph1')),
 #         controller.output['current_ph1'] = int(controller.power_meter.read('current_ph1')),
 #         controller.output['active_power_ph1'] = int(controller.power_meter.read('active_power_ph1')),
@@ -43,14 +43,14 @@ def set_output():
 #         controller.output['current_ph3'] = int(controller.power_meter.read('current_ph3')),
 #         controller.output['active_power_ph3'] = int(controller.power_meter.read('active_power_ph3')),
 
-# @t1.job(interval=datetime.timedelta(seconds=1))
-# def watchdog():
-#     if(controller.output['water_temp'] >= MAX_TEMP or
-#         controller.output['steam_temp_1'] >= MAX_TEMP or
-#         controller.output['steam_temp_2'] >= MAX_TEMP or
-#         controller.output['pressure'] >= MAX_PRESSURE):
+@t1.job(interval=datetime.timedelta(seconds=1))
+def watchdog():
+    if(controller.output['water_temp'] >= MAX_TEMP or
+        controller.output['steam_temp_1'] >= MAX_TEMP or
+        controller.output['steam_temp_2'] >= MAX_TEMP or
+        controller.output['pressure'] >= MAX_PRESSURE):
 
-#         controller.soft_shutdown()
+        controller.soft_shutdown()
 
 # @t1.job(interval=datetime.timedelta(milliseconds=200))
 # def pid_loop():
