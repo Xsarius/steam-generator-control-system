@@ -10,7 +10,6 @@ services:
         python3 manage.py makemigrations webcontrol &&
         python3 manage.py migrate &&
         gunicorn web.wsgi:application --bind 0.0.0.0:8000 --worker-class=gevent"
-    restart: "on-failure"
     env_file:
       - ./.env
     privileged: true
