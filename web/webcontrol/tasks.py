@@ -11,7 +11,7 @@ steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
 
-@t1.job(interval=datetime.timedelta(milliseconds=200))
+@t1.job(interval=datetime.timedelta(milliseconds=1000))
 def set_output():
     controller.output['water_temp'] = controller.temp_sensor_w1.getTemp(),
     controller.output['steam_temp_1'] = controller.temp_sensor_s1.getTemp(),
@@ -24,16 +24,17 @@ def set_output():
     controller.output['save'] = controller.data_save_started,
     controller.output['curr_temp_set'] = controller.pid.setpoint,
     controller.output['pid_signal'] = 0,
+    controller.output['pressure'] = controller.pressure_sensor.read('pressure'),
 
+
+
+@t1.job(interval=datetime.timedelta(seconds=1))
+def save_to_file():
     with open(BACKUP_FILE, "a") as backup_file:
         for key, value in controller.output.items():
             backup_file.write('%s:%s' % (key, value))
 
         backup_file.write('\n')
-
-@t1.job(interval=datetime.timedelta(seconds=1))
-def get_modbus_readouts():
-        controller.output['pressure'] = controller.pressure_sensor.read('pressure'),
 #         controller.output['voltage_ph1'] = controller.power_meter.read('voltage_ph1')),
 #         controller.output['current_ph1'] = controller.power_meter.read('current_ph1')),
 #         controller.output['active_power_ph1'] = controller.power_meter.read('active_power_ph1')),
