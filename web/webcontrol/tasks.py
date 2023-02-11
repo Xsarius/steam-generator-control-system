@@ -81,15 +81,15 @@ def savedata():
 
         SteamGenerator.objects.create(
             measurement_num = controller.curr_measurement_id,
-            water_temp = controller.output['water_temp'],
-            steam_temp_1 = controller.output['steam_temp_1'],
-            steam_temp_2 = controller.output['steam_temp_2'],
-            pressure = controller.output['pressure'],
-            heater_water1_power = controller.output['heater_w1'],
-            heater_water2_power = controller.output['heater_w2'],
-            heater_water3_power = controller.output['heater_w3'],
-            heater_steam_power = controller.output['heater_st'],
-            valve = controller.output['valve'],
+            water_temp = controller.output['water_temp'][0],
+            steam_temp_1 = controller.output['steam_temp_1'][0],
+            steam_temp_2 = controller.output['steam_temp_2'][0],
+            pressure = controller.output['pressure'][0],
+            heater_water1_power = controller.output['heater_w1'][0],
+            heater_water2_power = controller.output['heater_w2'][0],
+            heater_water3_power = controller.output['heater_w3'][0],
+            heater_steam_power = controller.output['heater_st'][0],
+            valve = controller.output['valve'][0],
             )
 
         SteamGenerator.save()
