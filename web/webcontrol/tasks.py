@@ -13,16 +13,16 @@ t2 = timeloop.Timeloop()
 
 @t1.job(interval=datetime.timedelta(milliseconds=200))
 def set_output():
-    controller.output['water_temp'] = int(controller.temp_sensor_w1.getTemp()),
-    controller.output['steam_temp_1'] = int(controller.temp_sensor_s1.getTemp()),
-    controller.output['steam_temp_2'] = int(controller.temp_sensor_s2.getTemp()),
-    controller.output['heater_w1'] = int(controller.heater_w1.state()),
-    controller.output['heater_w2'] = int(controller.heater_w2.state()),
-    controller.output['heater_w3'] = int(controller.heater_w3.state()),
-    controller.output['heater_st'] = int(controller.heater_s1.state()),
-    controller.output['valve'] = int(controller.valve.state()),
-    controller.output['save'] = int(controller.data_save_started),
-    controller.output['pid_signal'] = int(0),
+    controller.output['water_temp'] = controller.temp_sensor_w1.getTemp(),
+    controller.output['steam_temp_1'] = controller.temp_sensor_s1.getTemp(),
+    controller.output['steam_temp_2'] = controller.temp_sensor_s2.getTemp(),
+    controller.output['heater_w1'] = controller.heater_w1.state(),
+    controller.output['heater_w2'] = controller.heater_w2.state(),
+    controller.output['heater_w3'] = controller.heater_w3.state(),
+    controller.output['heater_st'] = controller.heater_s1.state(),
+    controller.output['valve'] = controller.valve.state(),
+    controller.output['save'] = controller.data_save_started,
+    controller.output['pid_signal'] = 0,
 
     with open(BACKUP_FILE, "a") as backup_file:
         for key, value in controller.output.items():
@@ -32,16 +32,16 @@ def set_output():
 
 @t1.job(interval=datetime.timedelta(seconds=1))
 def get_modbus_readouts():
-        controller.output['pressure'] = int(controller.pressure_sensor.read('pressure')),
-#         controller.output['voltage_ph1'] = int(controller.power_meter.read('voltage_ph1')),
-#         controller.output['current_ph1'] = int(controller.power_meter.read('current_ph1')),
-#         controller.output['active_power_ph1'] = int(controller.power_meter.read('active_power_ph1')),
-#         controller.output['voltage_ph2'] = int(controller.power_meter.read('voltage_ph2')),
-#         controller.output['current_ph2'] = int(controller.power_meter.read('current_ph2')),
-#         controller.output['active_power_ph2'] = int(controller.power_meter.read('active_power_ph2')),
-#         controller.output['voltage_ph3'] = int(controller.power_meter.read('voltage_ph3')),
-#         controller.output['current_ph3'] = int(controller.power_meter.read('current_ph3')),
-#         controller.output['active_power_ph3'] = int(controller.power_meter.read('active_power_ph3')),
+        controller.output['pressure'] = controller.pressure_sensor.read('pressure'),
+#         controller.output['voltage_ph1'] = controller.power_meter.read('voltage_ph1')),
+#         controller.output['current_ph1'] = controller.power_meter.read('current_ph1')),
+#         controller.output['active_power_ph1'] = controller.power_meter.read('active_power_ph1')),
+#         controller.output['voltage_ph2'] = controller.power_meter.read('voltage_ph2')),
+#         controller.output['current_ph2'] = controller.power_meter.read('current_ph2')),
+#         controller.output['active_power_ph2'] = controller.power_meter.read('active_power_ph2')),
+#         controller.output['voltage_ph3'] = controller.power_meter.read('voltage_ph3')),
+#         controller.output['current_ph3'] = controller.power_meter.read('current_ph3')),
+#         controller.output['active_power_ph3'] = controller.power_meter.read('active_power_ph3')),
 
 @t1.job(interval=datetime.timedelta(seconds=1))
 def watchdog():
@@ -54,8 +54,8 @@ def watchdog():
 
 # @t1.job(interval=datetime.timedelta(milliseconds=200))
 # def pid_loop():
-#     curr_temp = int(controller.output['steam_temp_1'])
-#     curr_press = int(controller.output['pressure'])
+#     curr_temp = controller.output['steam_temp_1'])
+#     curr_press = controller.output['pressure'])
 
 #     sat_temp = steamTable.tsat_p(curr_press)
 #     err = controller.pid(curr_temp)
@@ -68,14 +68,14 @@ def watchdog():
 #         # Liquid heating
 #         pass
 
-#     print(sat_temp)
-#     print(err)
+#     prsat_temp)
+#     prerr)
 
 
 @t2.job(interval=datetime.timedelta(milliseconds=200))
 def savedata():
     if controller.data_save_started:
-        print("Data save active.\n")
+        pr"Data save active.\n")
 
         SteamGenerator.objects.create(
             measurement_num = controller.curr_measurement_id,
