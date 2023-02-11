@@ -23,7 +23,7 @@ services:
       - static_volume:/home/src/web/staticfiles
     ports:
       - 80:80
-    depends_on:
+    links:
       - web
     restart: "on-failure"
   db:
