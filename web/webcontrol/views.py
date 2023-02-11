@@ -46,7 +46,7 @@ class UpdateData(View):
     def get(self, request, *args, **kwargs):
         res = controller.output
 
-        return res
+        return JsonResponse(res)
 
     def post(self, request):
         return HttpResponseBadRequest()
