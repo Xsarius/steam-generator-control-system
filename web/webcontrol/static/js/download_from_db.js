@@ -1,6 +1,11 @@
 function downloadFile() {
-    var download_vals = {
-        file_name: "test_file"
-    };
-    sendPOST(download_vals, "/download/");
+    $.getJSON("/download/", function (data) {
+        var json = JSON.stringify(data);
+        var fs = require('fs');
+
+        fs.writeFile('file.json', json, function(err) {
+            if (err) throw err;
+            console.log('complete');
+            });
+        });
 }
