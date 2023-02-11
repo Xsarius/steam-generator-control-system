@@ -89,10 +89,10 @@ def savedata():
             heater_water2_power = controller.output['heater_w2'][0],
             heater_water3_power = controller.output['heater_w3'][0],
             heater_steam_power = controller.output['heater_st'][0],
-            valve = controller.output['valve'][0],
+            valve = controller.output['valve'][0]
             )
 
-        SteamGenerator.save()
+    SteamGenerator.save()
 
 t1.start()
 t2.start()
