@@ -35,37 +35,37 @@ function reloadData() {
     json_data["active_power_ph3"];
 
   var temp = "OFF";
-  if (json_data["heater_w1"][0]) {
+  if (json_data["heater_w1"]) {
     temp = "ON";
   }
   document.getElementById("heater_1").textContent = temp;
 
   temp = "OFF";
-  if (json_data["heater_w2"][0]) {
+  if (json_data["heater_w2"]) {
     temp = "ON";
   }
   document.getElementById("heater_2").textContent = temp;
 
   temp = "OFF";
-  if (json_data["heater_w3"][0]) {
+  if (json_data["heater_w3"]) {
     temp = "ON";
   }
   document.getElementById("heater_3").textContent = temp;
 
   temp = "OFF";
-  if (json_data["heater_st"][0]) {
+  if (json_data["heater_st"]) {
     temp = "ON";
   }
   document.getElementById("heater_st1").textContent = temp;
 
   temp = "CLOSED";
-  if (json_data["valve"][0]) {
+  if (json_data["valve"]) {
     temp = "OPEN";
   }
   document.getElementById("valve").textContent = temp;
 
   temp = "INACTIVE";
-  if (json_data["save"][0]) {
+  if (json_data["save"]) {
     temp = "ACTIVE";
   }
   document.getElementById("save").textContent = temp;
