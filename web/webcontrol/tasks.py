@@ -75,7 +75,7 @@ def watchdog():
 @t2.job(interval=datetime.timedelta(milliseconds=200))
 def savedata():
     if controller.data_save_started:
-        pr"Data save active.\n")
+        print("Data save active.\n")
 
         SteamGenerator.objects.create(
             measurement_num = controller.curr_measurement_id,
