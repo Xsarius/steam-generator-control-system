@@ -34,41 +34,17 @@ function reloadData() {
   document.getElementById("active_power_ph3").textContent =
     json_data["active_power_ph3"];
 
-  var temp = "OFF";
-  if (json_data.heater_w1 == 1) {
-    temp = "ON";
-  }
-  document.getElementById("heater_1").textContent = temp;
+  document.getElementById("heater_1").textContent = json_data.heater_w1;
 
-  temp = "OFF";
-  if (json_data.heater_w2 == 1) {
-    temp = "ON";
-  }
-  document.getElementById("heater_2").textContent = temp;
+  document.getElementById("heater_2").textContent = json_data.heater_w2;
 
-  temp = "OFF";
-  if (json_data.heater_w3 == 1) {
-    temp = "ON";
-  }
-  document.getElementById("heater_3").textContent = temp;
+  document.getElementById("heater_3").textContent = json_data.heater_w3;
 
-  temp = "OFF";
-  if (json_data.heater_st == 1) {
-    temp = "ON";
-  }
-  document.getElementById("heater_st1").textContent = temp;
+  document.getElementById("heater_st1").textContent = json_data.heater_st;
 
-  temp = "CLOSED";
-  if (json_data.valve == 1) {
-    temp = "OPEN";
-  }
-  document.getElementById("valve").textContent = temp;
+  document.getElementById("valve").textContent = json_data.valve;
 
-  temp = "INACTIVE";
-  if (json_data.save == 1) {
-    temp = "ACTIVE";
-  }
-  document.getElementById("save").textContent = temp;
+  document.getElementById("save").textContent = json_data.save;
 }
 
 setInterval(reloadData, refresh_interval);
