@@ -1,20 +1,17 @@
 import RPi.GPIO as GPIO
 
 class Heater_SSR():
-    def __init__(self, pinNum, maxpower = 0, power=0):
+    def __init__(self, pinNum, power=0):
         self.pin = pinNum
         self.power = power
-        self.maxpower = maxpower
         GPIO.setup(pinNum, GPIO.OUT)
 
     def state(self):
-        if(self.power > 0):
-            return 1
-        return 0
+        return self.power
 
     def on(self):
         GPIO.output(self.pin, GPIO.HIGH)
-        self.power=self.maxpower
+        self.power=1
 
     def off(self):
         GPIO.output(self.pin, GPIO.LOW)

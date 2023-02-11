@@ -22,6 +22,7 @@ def set_output():
     controller.output['heater_st'] = controller.heater_s1.state(),
     controller.output['valve'] = controller.valve.state(),
     controller.output['save'] = controller.data_save_started,
+    controller.output['curr_temp_set'] = controller.pid.setpoint,
     controller.output['pid_signal'] = 0,
 
     with open(BACKUP_FILE, "a") as backup_file:
