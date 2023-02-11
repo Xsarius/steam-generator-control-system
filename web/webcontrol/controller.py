@@ -45,22 +45,22 @@ class SGController:
         except:
             failed_to_connect["Valve"] = "failed"
         try:
-            self.heater_w1 = devices.Heater_SSR(pinNum=PINS['HEATER_1'], maxpower=2667)
+            self.heater_w1 = devices.Heater_SSR(pinNum=PINS['HEATER_1'])
             failed_to_connect["Heater: water (1)"] = "connected"
         except:
             failed_to_connect["Heater: water (1)"] = "failed"
         try:
-            self.heater_w2 = devices.Heater_SSR(pinNum=PINS['HEATER_2'], maxpower=2667)
+            self.heater_w2 = devices.Heater_SSR(pinNum=PINS['HEATER_2'])
             failed_to_connect["Heater: water (2)"] = "connected"
         except:
             failed_to_connect["Heater: water (2)"] = "failed"
         try:
-            self.heater_w3 = devices.Heater_SSR(pinNum=PINS['HEATER_3'], maxpower=2667)
+            self.heater_w3 = devices.Heater_SSR(pinNum=PINS['HEATER_3'])
             failed_to_connect["Heater: water (3)"] = "connected"
         except:
             failed_to_connect["Heater: water (3)"] = "failed"
         try:
-            self.heater_s1 = devices.Heater_SSR(pinNum=PINS['HEATER_STEAM_1'], maxpower=954)
+            self.heater_s1 = devices.Heater_SSR(pinNum=PINS['HEATER_STEAM_1'])
             failed_to_connect["Heater: steam"] = "connected"
         except:
             failed_to_connect["Heater: steam"] = "failed"
