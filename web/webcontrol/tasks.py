@@ -85,9 +85,9 @@ def savedata():
             steam_temp_1 = controller.output['steam_temp_1'],
             steam_temp_2 = controller.output['steam_temp_2'],
             pressure = controller.output['pressure'],
-            heater_water1_power = controller.output['heater_1'],
-            heater_water2_power = controller.output['heater_2'],
-            heater_water3_power = controller.output['heater_3'],
+            heater_water1_power = controller.output['heater_w1'],
+            heater_water2_power = controller.output['heater_w2'],
+            heater_water3_power = controller.output['heater_w3'],
             heater_steam_power = controller.output['heater_st'],
             valve = controller.output['valve'],
             )
