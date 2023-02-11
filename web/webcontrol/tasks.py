@@ -79,7 +79,7 @@ def savedata():
     if controller.data_save_started:
         print("Data save active.\n")
 
-        SteamGenerator.objects.create(
+        item1 = SteamGenerator.objects.create(
             measurement_num = controller.curr_measurement_id,
             water_temp = controller.output['water_temp'][0],
             steam_temp_1 = controller.output['steam_temp_1'][0],
@@ -91,8 +91,6 @@ def savedata():
             heater_steam_power = controller.output['heater_st'][0],
             valve = controller.output['valve'][0]
             )
-
-    SteamGenerator.save()
 
 t1.start()
 t2.start()
