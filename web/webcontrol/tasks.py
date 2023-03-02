@@ -32,7 +32,7 @@ def set_output():
 def save_to_file():
     with open(BACKUP_FILE, "a") as backup_file:
         for key, value in controller.output.items():
-            backup_file.write('%s:%s' % (key, value))
+            backup_file.write('{0},{1},'.format(key, value))
 
         backup_file.write('\n')
 #         controller.output['voltage_ph1'] = controller.power_meter.read('voltage_ph1')),
