@@ -171,7 +171,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-BACKUP_FILE = "backup.txt"
+BACKUP_FILE = "test_02_03_23.txt"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
