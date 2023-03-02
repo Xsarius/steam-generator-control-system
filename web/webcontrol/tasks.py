@@ -7,6 +7,8 @@ from pyXSteam.XSteam import XSteam
 controller = SGController()
 steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
+x = False
+
 # Periodic task handlers
 t1 = timeloop.Timeloop()
 t2 = timeloop.Timeloop()
@@ -30,7 +32,11 @@ def set_output():
 
 @t1.job(interval=datetime.timedelta(seconds=1))
 def save_to_file():
-    with open(BACKUP_FILE, "a") as backup_file:
+    if not x:
+        with open(BACKUP_FILE, "a+") as backup_file:
+            backup_file.write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},".format('water_temp','steam_temp_1','steam_temp_2','heater_w1','heater_w2','heater_w3','heater_st','valve','save','curr_temp_set','pid_signal','pressure'))
+        x = True
+    with open(BACKUP_FILE, "a+") as backup_file:
         for key, value in controller.output.items():
             backup_file.write('{0},{1},'.format(key, value))
 
